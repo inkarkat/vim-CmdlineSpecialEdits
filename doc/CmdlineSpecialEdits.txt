@@ -1,0 +1,94 @@
+*CmdlineSpecialEdits.txt*	Useful replacements of parts of the cmdline.
+
+		   CMDLINE SPECIAL EDITS    by Ingo Karkat
+						     *CmdlineSpecialEdits.vim*
+description			|CmdlineSpecialEdits-description|
+usage				|CmdlineSpecialEdits-usage|
+installation			|CmdlineSpecialEdits-installation|
+integration			|CmdlineSpecialEdits-integration|
+limitations			|CmdlineSpecialEdits-limitations|
+known problems			|CmdlineSpecialEdits-known-problems|
+todo				|CmdlineSpecialEdits-todo|
+history				|CmdlineSpecialEdits-history|
+
+==============================================================================
+DESCRIPTION				     *CmdlineSpecialEdits-description*
+
+This plugin ...
+
+HOW IT WORKS								     *
+
+SEE ALSO								     *
+
+RELATED WORKS								     *
+
+- The |c_CTRL-G_CTRL-U| mapping was inspired by
+   http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406#11013406
+
+==============================================================================
+USAGE						   *CmdlineSpecialEdits-usage*
+							     *c_CTRL-G_CTRL-U*
+CTRL-G CTRL-U		Remove all characters between the cursor position and
+			the closest previous |:range| given to a command. When
+			directly after a range, remove it.
+			Useful to repeat a recalled command line with the same
+			range, but a different command.
+			When used on an empty command line, recalls the
+			previous command-line from history first.
+							     *c_CTRL-G_CTRL-A*
+CTRL-G CTRL-A		Remove all command arguments between the cursor
+			position and the closest previous command.
+			Useful to repeat a command with different arguments.
+			When used on an empty command line, recalls the
+			previous command-line from history first.
+							     *c_CTRL-G_CTRL-C*
+CTRL-G CTRL-C		Remove the closest previous command from the command
+			line, but keep its arguments.
+			Useful to re-use the same arguments with a different
+			command.
+			When used on an empty command line, recalls the
+			previous command-line from history first.
+
+==============================================================================
+INSTALLATION				    *CmdlineSpecialEdits-installation*
+
+This script is packaged as a |vimball|. If you have the "gunzip" decompressor
+in your PATH, simply edit the *.vba.gz package in Vim; otherwise, decompress
+the archive first, e.g. using WinZip. Inside Vim, install by sourcing the
+vimball or via the |:UseVimball| command. >
+    vim CmdlineSpecialEdits.vba.gz
+    :so %
+To uninstall, use the |:RmVimball| command.
+
+DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
+
+- Requires Vim 7.0 or higher.
+
+==============================================================================
+INTEGRATION				     *CmdlineSpecialEdits-integration*
+
+==============================================================================
+LIMITATIONS				     *CmdlineSpecialEdits-limitations*
+
+KNOWN PROBLEMS				  *CmdlineSpecialEdits-known-problems*
+
+TODO						    *CmdlineSpecialEdits-todo*
+
+IDEAS						   *CmdlineSpecialEdits-ideas*
+
+==============================================================================
+HISTORY						 *CmdlineSpecialEdits-history*
+
+GOAL
+First published version.
+
+0.01	13-Jun-2012
+Started development.
+
+==============================================================================
+Copyright: (C) 2012 Ingo Karkat
+The VIM LICENSE applies to this script; see |copyright|.
+
+Maintainer:	Ingo Karkat <ingo@karkat.de>
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
