@@ -64,8 +64,8 @@ function! CmdlineSpecialEdits#RemoveCommandName()
     endif
 endfunction
 
-function! s:RecallHistoryWithoutRange( type, prefix )
-    let l:cnt = 1
+function! s:RecallHistoryWithoutRange( type, prefix, historyStartCnt )
+    let l:cnt = a:historyStartCnt
     while 1
 	let l:entry = histget(a:type, -1 * l:cnt)
 	if empty(l:entry)
@@ -78,32 +78,46 @@ function! s:RecallHistoryWithoutRange( type, prefix )
 	if strpart(l:entryWithoutRange, 0, len(a:prefix)) ==# a:prefix
 	    " Since we parse the first found range, the combiner may only be
 	    " whitespace, which we discard.
-	    return [l:commandParse[1], l:entryWithoutRange]
+	    return [l:cnt, l:commandParse[1], l:entryWithoutRange]
 	endif
 
 	let l:cnt += 1
     endwhile
 
     " No matching items.
-    return []
+    return [0, '', '']
 endfunction
+let s:originalRangeCmdlineBeforeCursor = ''
+let s:recalledRangeCmdlineBeforeCursor = ''
 function! CmdlineSpecialEdits#RecallAnyRange()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
 
+    let l:historyStartCnt = 1
+    if l:cmdlineBeforeCursor ==# s:recalledRangeCmdlineBeforeCursor && s:historyCnt > 0
+	" The recall mapping is executed with the same command line before the
+	" cursor. To search further in the history, don't take the current
+	" command line, but use the stored one and recalled history index, and
+	" continue searching from there.
+	let l:cmdlineBeforeCursor = s:originalRangeCmdlineBeforeCursor
+	let l:historyStartCnt = s:historyCnt + 1
+echomsg '**** recall from' l:historyStartCnt string(l:cmdlineBeforeCursor)
+    else
+	let s:originalRangeCmdlineBeforeCursor = l:cmdlineBeforeCursor
+    endif
+
     let l:commandParse = ingoexcommands#ParseRange(l:cmdlineBeforeCursor)
     let [l:combiner, l:commandCommands, l:upToRange, l:commandWithoutRange] = l:commandParse[1:4]
-"****D echomsg '****' string(l:upToRange) string(l:commandWithoutRange)
-    let l:historyRecall = s:RecallHistoryWithoutRange(getcmdtype(), l:commandWithoutRange)
-    if empty(l:historyRecall)
+    let [s:historyCnt, l:recalledCommandCommands, l:recalledCommandWithoutRange ]= s:RecallHistoryWithoutRange(getcmdtype(), l:commandWithoutRange, l:historyStartCnt)
+echomsg '****' string(l:upToRange) string(l:commandWithoutRange) '=>' string(l:recalledCommandWithoutRange)
+    if s:historyCnt == 0
 	return getcmdline()
     endif
-    let [l:recalledCommandCommands, l:recalledCommandWithoutRange] = l:historyRecall
 
     " Use commandCommands (e.g. :verbose) from the recalled history unless one
     " is given in the current command line.
-    let l:cmdlineUpToCursor = (empty(l:commandCommands) ? l:recalledCommandCommands : l:commandCommands) . l:upToRange . l:recalledCommandWithoutRange
-    call setcmdpos(strlen(l:cmdlineUpToCursor) + 1)
-    return l:cmdlineUpToCursor . l:cmdlineAfterCursor
+    let s:recalledRangeCmdlineBeforeCursor = (empty(l:commandCommands) ? l:recalledCommandCommands : l:commandCommands) . l:upToRange . l:recalledCommandWithoutRange
+    call setcmdpos(strlen(s:recalledRangeCmdlineBeforeCursor) + 1)
+    return s:recalledRangeCmdlineBeforeCursor . l:cmdlineAfterCursor
 endfunction
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
