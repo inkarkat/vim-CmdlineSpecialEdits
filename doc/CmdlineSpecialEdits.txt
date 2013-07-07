@@ -48,15 +48,23 @@ CTRL-G CTRL-C		Remove the closest previous command from the command
 			command.
 			When used on an empty command line, recalls the
 			previous command-line from history first.
+							     *c_CTRL-G_CTRL-O*
+CTRL-G CTRL-O		Recall older command-line from history, whose
+			beginning matches the current command-line, regardless
+			of the current |:range| and the one in the history.
+			Subsequent invocations step backwards through the
+			history, like |c_<Up>|. This allows you to re-apply
+			previous visual mode commands (e.g. :'<,'>s/foo/bar)
+			to a different range, or vice versa.
 
 ==============================================================================
 INSTALLATION				    *CmdlineSpecialEdits-installation*
 
 This script is packaged as a |vimball|. If you have the "gunzip" decompressor
-in your PATH, simply edit the *.vba.gz package in Vim; otherwise, decompress
+in your PATH, simply edit the *.vmb.gz package in Vim; otherwise, decompress
 the archive first, e.g. using WinZip. Inside Vim, install by sourcing the
 vimball or via the |:UseVimball| command. >
-    vim CmdlineSpecialEdits.vba.gz
+    vim CmdlineSpecialEdits*.vmb.gz
     :so %
 To uninstall, use the |:RmVimball| command.
 
