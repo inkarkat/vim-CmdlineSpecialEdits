@@ -1,0 +1,4 @@
+autoload/CmdlineSpecialEdits.vim
+autoload/ingoexcommands.vim
+plugin/CmdlineSpecialEdits.vim
+doc/CmdlineSpecialEdits.txt
