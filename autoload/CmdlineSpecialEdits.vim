@@ -1,7 +1,8 @@
 " CmdlineSpecialEdits.vim: Useful replacements of parts of the cmdline.
 "
 " DEPENDENCIES:
-"   - ingoexcommands.vim autoload script
+"   - ingo/cmdargs/command.vim autoload script
+"   - ingo/cmdargs/range.vim autoload script
 "
 " Copyright: (C) 2012-2013 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
@@ -9,6 +10,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	08-Jul-2013	Move ingoexcommands.vim into ingo-library.
 "	002	31-May-2013	Move the parsing of the command range back to
 "				ingoexcommands.vim where we originally took the
 "				pattern from.
@@ -26,7 +28,7 @@ endfunction
 function! CmdlineSpecialEdits#RemoveAllButRange()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
 
-    let l:commandParse = ingoexcommands#ParseRange(l:cmdlineBeforeCursor, {'isAllowEmptyCommand': 0})  " Ensure that there's a command after the range.
+    let l:commandParse = ingo#cmdargs#range#Parse(l:cmdlineBeforeCursor, {'isAllowEmptyCommand': 0})  " Ensure that there's a command after the range.
     if empty(l:commandParse)
 	return getcmdline()
     else
@@ -38,7 +40,7 @@ endfunction
 function! CmdlineSpecialEdits#RemoveCommandArguments()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
 
-    let l:commandParse = ingoexcommands#ParseCommand(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
+    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
     if empty(l:commandParse)
 	return getcmdline()
     else
@@ -54,7 +56,7 @@ endfunction
 function! CmdlineSpecialEdits#RemoveCommandName()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
 
-    let l:commandParse = ingoexcommands#ParseCommand(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
+    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
     if empty(l:commandParse)
 	return getcmdline()
     else
@@ -77,7 +79,7 @@ function! s:RecallHistoryWithoutRange( type, prefix, historyStartCnt )
 	    break
 	endif
 "****D echomsg '****' l:cnt string(l:entry)
-	let l:commandParse = ingoexcommands#ParseRange(l:entry, {'isParseFirstRange': 1})
+	let l:commandParse = ingo#cmdargs#range#Parse(l:entry, {'isParseFirstRange': 1})
 	if empty(l:commandParse) | continue | endif " Should not happen.
 	let l:entryWithoutRange = l:commandParse[4]
 	if strpart(l:entryWithoutRange, 0, len(a:prefix)) ==# a:prefix
@@ -111,7 +113,7 @@ function! CmdlineSpecialEdits#RecallAnyRange()
 	let s:recalledCommandWithoutRange = ''
     endif
 
-    let l:commandParse = ingoexcommands#ParseRange(l:cmdlineBeforeCursor)
+    let l:commandParse = ingo#cmdargs#range#Parse(l:cmdlineBeforeCursor)
     let [l:combiner, l:commandCommands, l:upToRange, l:commandWithoutRange] = l:commandParse[1:4]
     while 1
 	let [s:historyCnt, l:recalledCommandCommands, l:recalledCommandWithoutRange ]= s:RecallHistoryWithoutRange(getcmdtype(), l:commandWithoutRange, l:historyStartCnt)
