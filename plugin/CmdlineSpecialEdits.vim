@@ -4,12 +4,14 @@
 "   - Requires Vim 7.0 or higher.
 "   - CmdlineSpecialEdits.vim autoload script
 "
-" Copyright: (C) 2012 Ingo Karkat
+" Copyright: (C) 2012-2014 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	20-Jun-2014	Add toggling between :substitute and :SmartCase
+"				variants, and the corresponding search patterns.
 "	001	19-Jun-2012	file creation
 
 " Avoid installing twice or when in unsupported Vim version.
@@ -36,6 +38,11 @@ endif
 cnoremap <Plug>(CmdlineSpecialRecallAnyRange) <C-\>e(CmdlineSpecialEdits#RecallAnyRange())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRecallAnyRange)', 'c')
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
+endif
+
+cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#ToggleSmartCaseCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#ToggleSmartCasePattern())<CR>')
+if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
+    cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
 endif
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
