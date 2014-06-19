@@ -3,6 +3,7 @@
 " DEPENDENCIES:
 "   - ingo/cmdargs/command.vim autoload script
 "   - ingo/cmdargs/range.vim autoload script
+"   - ingo/cmdargs/substitute.vim autoload script
 "   - ingo/smartcase.vim autoload script
 "
 " Copyright: (C) 2012-2014 Ingo Karkat
@@ -155,7 +156,14 @@ function! CmdlineSpecialEdits#ToggleSmartCaseCommand()
     else
 	let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^s\%[ubstitute]\w\@!', 'SmartCase', '')
 	if l:toggleSubstituteCommand ==# l:commandParse[4]
+	    " Try converting back: SmartCase -> normal pattern.
 	    let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^S\%[martCase]\w\@!', 's', '')
+	else
+	    " Also convert the search pattern.
+	    let [l:separator, l:pattern, l:replacement, l:flags, l:count] = ingo#cmdargs#substitute#Parse(l:toggleSubstituteCommand[9:], {'emptyPattern': @/, 'emptyReplacement': '', 'emptyFlags': ['', '']})
+	    if ! empty(l:pattern)
+		let l:toggleSubstituteCommand = 'SmartCase' . l:separator . ingo#smartcase#FromPattern(l:pattern) . l:separator . l:replacement . l:separator . l:flags . l:count
+	    endif
 	endif
 	if l:toggleSubstituteCommand ==# l:commandParse[4]
 	    return getcmdline()
