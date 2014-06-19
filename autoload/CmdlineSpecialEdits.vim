@@ -3,6 +3,7 @@
 " DEPENDENCIES:
 "   - ingo/cmdargs/command.vim autoload script
 "   - ingo/cmdargs/range.vim autoload script
+"   - ingo/smartcase.vim autoload script
 "
 " Copyright: (C) 2012-2014 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
@@ -169,20 +170,11 @@ function! CmdlineSpecialEdits#ToggleSmartCaseCommand()
 endfunction
 function! CmdlineSpecialEdits#ToggleSmartCasePattern()
     let l:search = getcmdline()
-    if l:search =~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\c' && l:search =~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\A\\?'
-	let l:search = substitute(l:search, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\\(c\|A\\?\)', '', 'g')
+    if ingo#smartcase#IsSmartCasePattern(l:search)
+	return ingo#smartcase#Undo(l:search)
     else
-	" Make all non-alphabetic delimiter characters and whitespace optional. As
-	" the substitution separator and backslash are escaped, they must be handled
-	" separately.
-	let l:search = substitute(l:search, '\\\@!\A\|\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[/\\]', '\\A\\?', 'g')
-	" Allow delimiters between CamelCase fragments to catch all variants.
-	let l:search = substitute(l:search, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\(\l\)\(\u\)', '\1\\A\\?\2', 'g')
-
-	let l:search = '\c' . l:search
+	return ingo#smartcase#FromPattern(l:search)
     endif
-
-    return l:search
 endfunction
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
