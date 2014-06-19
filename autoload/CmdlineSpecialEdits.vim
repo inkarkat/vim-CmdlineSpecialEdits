@@ -4,12 +4,14 @@
 "   - ingo/cmdargs/command.vim autoload script
 "   - ingo/cmdargs/range.vim autoload script
 "
-" Copyright: (C) 2012-2013 Ingo Karkat
+" Copyright: (C) 2012-2014 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	004	20-Jun-2014	Add toggling between :substitute and :SmartCase
+"				variants, and the corresponding search patterns.
 "	003	08-Jul-2013	Move ingoexcommands.vim into ingo-library.
 "	002	31-May-2013	Move the parsing of the command range back to
 "				ingoexcommands.vim where we originally took the
@@ -25,6 +27,8 @@ function! s:GetCurrentOrPreviousCmdline()
 	return [strpart(getcmdline(), 0, getcmdpos() - 1), strpart(getcmdline(), getcmdpos() - 1)]
     endif
 endfunction
+
+
 function! CmdlineSpecialEdits#RemoveAllButRange()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
 
@@ -137,6 +141,48 @@ function! CmdlineSpecialEdits#RecallAnyRange()
     let s:recalledRangeCmdlineBeforeCursor = (empty(l:commandCommands) ? l:recalledCommandCommands : l:commandCommands) . l:upToRange . l:recalledCommandWithoutRange
     call setcmdpos(strlen(s:recalledRangeCmdlineBeforeCursor) + 1)
     return s:recalledRangeCmdlineBeforeCursor . l:cmdlineAfterCursor
+endfunction
+
+
+
+function! CmdlineSpecialEdits#ToggleSmartCaseCommand()
+    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = s:GetCurrentOrPreviousCmdline()
+
+    let l:commandParse = ingo#cmdargs#range#Parse(l:cmdlineBeforeCursor, {'isAllowEmptyCommand': 0})  " Ensure that there's a command after the range.
+    if empty(l:commandParse)
+	return getcmdline()
+    else
+	let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^s\%[ubstitute]\w\@!', 'SmartCase', '')
+	if l:toggleSubstituteCommand ==# l:commandParse[4]
+	    let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^S\%[martCase]\w\@!', 's', '')
+	endif
+	if l:toggleSubstituteCommand ==# l:commandParse[4]
+	    return getcmdline()
+	endif
+
+	let l:upToCommand = join(l:commandParse[1:3], '')
+	let l:afterCommand = join(l:commandParse[5:7], '')
+	let l:toggled = l:upToCommand . l:toggleSubstituteCommand . l:afterCommand
+	call setcmdpos(strlen(l:toggled) + 1)
+	return l:toggled . l:cmdlineAfterCursor
+    endif
+endfunction
+function! CmdlineSpecialEdits#ToggleSmartCasePattern()
+    let l:search = getcmdline()
+    if l:search =~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\c' && l:search =~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\A\\?'
+	let l:search = substitute(l:search, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\\(c\|A\\?\)', '', 'g')
+    else
+	" Make all non-alphabetic delimiter characters and whitespace optional. As
+	" the substitution separator and backslash are escaped, they must be handled
+	" separately.
+	let l:search = substitute(l:search, '\\\@!\A\|\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[/\\]', '\\A\\?', 'g')
+	" Allow delimiters between CamelCase fragments to catch all variants.
+	let l:search = substitute(l:search, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\(\l\)\(\u\)', '\1\\A\\?\2', 'g')
+
+	let l:search = '\c' . l:search
+    endif
+
+    return l:search
 endfunction
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
