@@ -154,19 +154,25 @@ function! CmdlineSpecialEdits#ToggleSmartCaseCommand()
     if empty(l:commandParse)
 	return getcmdline()
     else
-	let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^s\%[ubstitute]\w\@!', 'SmartCase', '')
+	let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^s\%[ubstitute]\w\@!', '', '')
+	let l:newCommand = 'SmartCase'
+	let l:PatternConverter = function('ingo#smartcase#FromPattern')
 	if l:toggleSubstituteCommand ==# l:commandParse[4]
 	    " Try converting back: SmartCase -> normal pattern.
-	    let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^S\%[martCase]\w\@!', 's', '')
-	else
-	    " Also convert the search pattern.
-	    let [l:separator, l:pattern, l:replacement, l:flags, l:count] = ingo#cmdargs#substitute#Parse(l:toggleSubstituteCommand[9:], {'emptyPattern': @/, 'emptyReplacement': '', 'emptyFlags': ['', '']})
-	    if ! empty(l:pattern)
-		let l:toggleSubstituteCommand = 'SmartCase' . l:separator . ingo#smartcase#FromPattern(l:pattern) . l:separator . l:replacement . l:separator . l:flags . l:count
-	    endif
+	    let l:toggleSubstituteCommand = substitute(l:commandParse[4], '^S\%[martCase]\w\@!', '', '')
+	    let l:newCommand = 's'
+	    let l:PatternConverter = function('ingo#smartcase#Undo')
 	endif
 	if l:toggleSubstituteCommand ==# l:commandParse[4]
 	    return getcmdline()
+	endif
+
+	" Also convert the search pattern.
+	let [l:separator, l:pattern, l:replacement, l:flags, l:count] = ingo#cmdargs#substitute#Parse(l:toggleSubstituteCommand, {'emptyPattern': @/, 'emptyReplacement': '', 'emptyFlags': ['', '']})
+	if empty(l:pattern)
+	    let l:toggleSubstituteCommand = l:newCommand . l:toggleSubstituteCommand
+	else
+	    let l:toggleSubstituteCommand = l:newCommand . l:separator . call(l:PatternConverter, [l:pattern]) . l:separator . l:replacement . l:separator . l:flags . l:count
 	endif
 
 	let l:upToCommand = join(l:commandParse[1:3], '')
@@ -178,6 +184,10 @@ function! CmdlineSpecialEdits#ToggleSmartCaseCommand()
 endfunction
 function! CmdlineSpecialEdits#ToggleSmartCasePattern()
     let l:search = getcmdline()
+    if empty(l:search)
+	let l:search = histget('search', -1)
+    endif
+
     if ingo#smartcase#IsSmartCasePattern(l:search)
 	return ingo#smartcase#Undo(l:search)
     else
