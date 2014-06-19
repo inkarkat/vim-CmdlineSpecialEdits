@@ -33,4 +33,9 @@ if ! hasmapto('<Plug>(CmdlineSpecialRemoveCommandName)', 'c')
     cmap <C-g><C-c> <Plug>(CmdlineSpecialRemoveCommandName)
 endif
 
+cnoremap <Plug>(CmdlineSpecialRecallAnyRange) <C-\>e(CmdlineSpecialEdits#RecallAnyRange())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialRecallAnyRange)', 'c')
+    cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
+endif
+
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
