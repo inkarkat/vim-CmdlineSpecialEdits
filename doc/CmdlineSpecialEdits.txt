@@ -56,6 +56,13 @@ CTRL-G CTRL-O		Recall older command-line from history, whose
 			history, like |c_<Up>|. This allows you to re-apply
 			previous visual mode commands (e.g. :'<,'>s/foo/bar)
 			to a different range, or vice versa.
+							     *c_CTRL-G_CTRL-S*
+CTRL-G CTRL-S		Toggle between |:substitute| and |:SmartCase| variants.
+			When entering a search pattern: Toggle pattern between
+			normal and SmartCase matching.
+			When used on an empty command line, recalls the
+			previous command-line / search pattern from history
+			first.
 
 ==============================================================================
 INSTALLATION				    *CmdlineSpecialEdits-installation*
@@ -96,7 +103,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2012-2013 Ingo Karkat
+Copyright: (C) 2012-2014 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
