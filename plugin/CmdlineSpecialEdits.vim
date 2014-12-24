@@ -20,27 +20,27 @@ if exists('g:loaded_CmdlineSpecialEdits') || (v:version < 700)
 endif
 let g:loaded_CmdlineSpecialEdits = 1
 
-cnoremap <Plug>(CmdlineSpecialRemoveAllButRange) <C-\>e(CmdlineSpecialEdits#RemoveAllButRange())<CR>
+cnoremap <Plug>(CmdlineSpecialRemoveAllButRange) <C-\>e(CmdlineSpecialEdits#Remove#AllButRange())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRemoveAllButRange)', 'c')
     cmap <C-g><C-u> <Plug>(CmdlineSpecialRemoveAllButRange)
 endif
 
-cnoremap <Plug>(CmdlineSpecialRemoveCommandArguments) <C-\>e(CmdlineSpecialEdits#RemoveCommandArguments())<CR>
+cnoremap <Plug>(CmdlineSpecialRemoveCommandArguments) <C-\>e(CmdlineSpecialEdits#Remove#CommandArguments())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRemoveCommandArguments)', 'c')
     cmap <C-g><C-a> <Plug>(CmdlineSpecialRemoveCommandArguments)
 endif
 
-cnoremap <Plug>(CmdlineSpecialRemoveCommandName) <C-\>e(CmdlineSpecialEdits#RemoveCommandName())<CR>
+cnoremap <Plug>(CmdlineSpecialRemoveCommandName) <C-\>e(CmdlineSpecialEdits#Remove#CommandName())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRemoveCommandName)', 'c')
     cmap <C-g><C-c> <Plug>(CmdlineSpecialRemoveCommandName)
 endif
 
-cnoremap <Plug>(CmdlineSpecialRecallAnyRange) <C-\>e(CmdlineSpecialEdits#RecallAnyRange())<CR>
+cnoremap <Plug>(CmdlineSpecialRecallAnyRange) <C-\>e(CmdlineSpecialEdits#Recall#AnyRange())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRecallAnyRange)', 'c')
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
 endif
 
-cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#ToggleSmartCaseCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#ToggleSmartCasePattern())<CR>')
+cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#SmartCase#ToggleCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#SmartCase#TogglePattern())<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
 endif
