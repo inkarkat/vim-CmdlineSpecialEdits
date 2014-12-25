@@ -10,6 +10,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	25-Dec-2014	Add toggling between symbolic and number ranges.
 "	002	20-Jun-2014	Add toggling between :substitute and :SmartCase
 "				variants, and the corresponding search patterns.
 "	001	19-Jun-2012	file creation
@@ -43,6 +44,11 @@ endif
 cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#SmartCase#ToggleCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#SmartCase#TogglePattern())<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
+endif
+
+cnoremap <expr> <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialToggleSymbolicRange)', 'c')
+    cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
 endif
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
