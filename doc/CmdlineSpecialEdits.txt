@@ -48,6 +48,12 @@ CTRL-G CTRL-C		Remove the closest previous command from the command
 			command.
 			When used on an empty command line, recalls the
 			previous command-line from history first.
+CTRL-G '		Change symbolic ranges like '<,'> to the actual line
+			numbers, and vice versa.
+			Useful to be able to repeat a command on the same
+			range, even when the selection changes.
+			When used on an empty command line, recalls the
+			previous command-line from history first.
 							     *c_CTRL-G_CTRL-O*
 CTRL-G CTRL-O		Recall older command-line from history, whose
 			beginning matches the current command-line, regardless
