@@ -11,6 +11,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	28-Dec-2014	Allow to configure all considered marks via
+"				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
 "	001	25-Dec-2014	file creation
 let s:save_cpo = &cpo
 set cpo&vim
@@ -54,12 +56,11 @@ function! s:ToggleRange( range )
     endif
 endfunction
 function! s:FindMark( lnum, offset )
-    for l:mark in split('abcdefghijklmnopqrstuvwxyz', '\zs') +
+    for l:mark in
     \   filter(
-    \       split('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', '\zs'),
-    \       'getpos("''" . v:val)[0] == ' . bufnr('')
-    \   ) +
-    \   split(g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset, '\zs')
+    \       split(g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks, '\zs'),
+    \       'index([0, ' . bufnr('.') . '], getpos("''" . v:val)[0]) != -1'
+    \   )
 	let l:markLnum = line("'" . l:mark)
 	if l:markLnum > 0
 	    if l:markLnum + a:offset == a:lnum
