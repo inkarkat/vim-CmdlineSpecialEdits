@@ -20,6 +20,9 @@ HOW IT WORKS								     *
 
 SEE ALSO								     *
 
+- CTRL-G ' inspired by
+    http://superuser.com/questions/856533/vim-visual-mode-search-and-replace
+
 RELATED WORKS								     *
 
 - The |c_CTRL-G_CTRL-U| mapping was inspired by
