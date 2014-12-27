@@ -10,6 +10,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	004	26-Dec-2014	Add configuration for symbolic ranges.
 "	003	25-Dec-2014	Add toggling between symbolic and number ranges.
 "	002	20-Jun-2014	Add toggling between :substitute and :SmartCase
 "				variants, and the corresponding search patterns.
@@ -20,6 +21,18 @@ if exists('g:loaded_CmdlineSpecialEdits') || (v:version < 700)
     finish
 endif
 let g:loaded_CmdlineSpecialEdits = 1
+
+"- configuration ---------------------------------------------------------------
+
+if ! exists('g:CmdlineSpecialEdits_SymbolicRangeConsideredSpecialMarks')
+    let g:CmdlineSpecialEdits_SymbolicRangeConsideredSpecialMarks = '<>[]`"^.{}()'
+endif
+if ! exists('g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset')
+    let g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset = 3
+endif
+
+
+"- mappings --------------------------------------------------------------------
 
 cnoremap <Plug>(CmdlineSpecialRemoveAllButRange) <C-\>e(CmdlineSpecialEdits#Remove#AllButRange())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRemoveAllButRange)', 'c')
@@ -46,7 +59,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
 endif
 
-cnoremap <expr> <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
+cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSymbolicRange)', 'c')
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
 endif
