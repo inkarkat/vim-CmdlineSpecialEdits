@@ -5,6 +5,7 @@
 description			|CmdlineSpecialEdits-description|
 usage				|CmdlineSpecialEdits-usage|
 installation			|CmdlineSpecialEdits-installation|
+configuration			|CmdlineSpecialEdits-configuration|
 integration			|CmdlineSpecialEdits-integration|
 limitations			|CmdlineSpecialEdits-limitations|
 known problems			|CmdlineSpecialEdits-known-problems|
@@ -90,6 +91,32 @@ DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 - Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.010 or
   higher.
 
+==============================================================================
+CONFIGURATION				   *CmdlineSpecialEdits-configuration*
+
+For a permanent configuration, put the following commands into your |vimrc|:
+			*g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks*
+The marks to be considered by the |c_CTRL-G_'| command are specified as a
+String of mark names, with "#" representing the current line range :.; they
+are checked from left to right. The default considers all marks except for
+(){} (because those are very dependent on the current position). >
+    let g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks = 'abcde...'
+<			    *g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset*
+The |c_CTRL-G_'| command also uses small offsets for nearby marks. The default
+is +/-3 lines; change it via: >
+    let g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset = 0
+<
+						   *CmdlineSpecialEdits-remap*
+If you want to use different mappings, map your keys to the
+<Plug>(CmdlineSpecialEdits...) mapping targets _before_ sourcing the script
+(e.g. in your |vimrc|): >
+    cmap <C-g><C-u> <Plug>(CmdlineSpecialRemoveAllButRange)
+    cmap <C-g><C-a> <Plug>(CmdlineSpecialRemoveCommandArguments)
+    cmap <C-g><C-c> <Plug>(CmdlineSpecialRemoveCommandName)
+    cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
+    cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
+    cmap <C-g>'	    <Plug>(CmdlineSpecialToggleSymbolicRange)
+<
 ==============================================================================
 INTEGRATION				     *CmdlineSpecialEdits-integration*
 
