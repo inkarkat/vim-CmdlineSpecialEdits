@@ -10,6 +10,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	005	28-Dec-2014	Allow to configure all considered marks via
+"				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
 "	004	26-Dec-2014	Add configuration for symbolic ranges.
 "	003	25-Dec-2014	Add toggling between symbolic and number ranges.
 "	002	20-Jun-2014	Add toggling between :substitute and :SmartCase
@@ -24,8 +26,8 @@ let g:loaded_CmdlineSpecialEdits = 1
 
 "- configuration ---------------------------------------------------------------
 
-if ! exists('g:CmdlineSpecialEdits_SymbolicRangeConsideredSpecialMarks')
-    let g:CmdlineSpecialEdits_SymbolicRangeConsideredSpecialMarks = '<>[]`"^.{}()'
+if ! exists('g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks')
+    let g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]`"^.#'
 endif
 if ! exists('g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset')
     let g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset = 3
