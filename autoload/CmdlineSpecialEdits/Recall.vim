@@ -11,26 +11,30 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	20-Jun-2014	FIX: Avoid endless loop on invalid command. Move
+"				counter increase to the beginning of the loop.
 "	001	20-Jun-2014	file creation
 
 function! s:RecallHistoryWithoutRange( type, prefix, historyStartCnt )
-    let l:cnt = a:historyStartCnt
+    let l:cnt = a:historyStartCnt - 1
     while 1
+	let l:cnt += 1
 	let l:entry = histget(a:type, -1 * l:cnt)
 	if empty(l:entry)
 	    break
 	endif
 "****D echomsg '****' l:cnt string(l:entry)
 	let l:commandParse = ingo#cmdargs#range#Parse(l:entry, {'isParseFirstRange': 1})
-	if empty(l:commandParse) | continue | endif " Should not happen.
+	if empty(l:commandParse)
+	    " This can happen with invalid commands, e.g. :'<,'>9999FooBar.
+	    continue
+	endif
 	let l:entryWithoutRange = l:commandParse[4]
 	if strpart(l:entryWithoutRange, 0, len(a:prefix)) ==# a:prefix
 	    " Since we parse the first found range, the combiner may only be
 	    " whitespace, which we discard.
 	    return [l:cnt, l:commandParse[1], l:entryWithoutRange]
 	endif
-
-	let l:cnt += 1
     endwhile
 
     " No matching items.
