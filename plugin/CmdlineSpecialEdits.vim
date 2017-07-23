@@ -2,14 +2,15 @@
 "
 " DEPENDENCIES:
 "   - Requires Vim 7.0 or higher.
-"   - CmdlineSpecialEdits.vim autoload script
+"   - CmdlineSpecialEdits/*.vim autoload scripts
 "
-" Copyright: (C) 2012-2014 Ingo Karkat
+" Copyright: (C) 2012-2015 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	006	30-Mar-2015	Add mappings for adding regexp prefix / suffix.
 "	005	28-Dec-2014	Allow to configure all considered marks via
 "				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
 "	004	26-Dec-2014	Add configuration for symbolic ranges.
@@ -64,6 +65,15 @@ endif
 cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSymbolicRange)', 'c')
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
+endif
+
+cnoremap <Plug>(CmdlineSpecialAddPrefix) <C-\>e(CmdlineSpecialEdits#Edit#AddPrefix())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialAddPrefix)', 'c')
+    cmap <C-g>I <Plug>(CmdlineSpecialAddPrefix)
+endif
+cnoremap <Plug>(CmdlineSpecialAddSuffix) <C-\>e(CmdlineSpecialEdits#Edit#AddSuffix())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialAddSuffix)', 'c')
+    cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
 endif
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
