@@ -23,6 +23,7 @@ SEE ALSO								     *
 
 - CTRL-G ' inspired by
     http://superuser.com/questions/856533/vim-visual-mode-search-and-replace
+- CTRL-BS based on http://vim.wikia.com/wiki/Command_line_file_name_completion
 
 RELATED WORKS								     *
 
@@ -73,6 +74,13 @@ CTRL-G CTRL-S		Toggle between |:substitute| and |:SmartCase| variants.
 			When used on an empty command line, recalls the
 			previous command-line / search pattern from history
 			first.
+							     *c_CTRL-G_CTRL-S*
+CTRL-G CTRL-H		Apply literal <BS> and <C-h> keys (e.g. when editing a
+			macro inline via q"{reg}) by removing them and the
+			previously pressed key.
+								   *c_CTRL-BS*
+CTRL-BS			Remove last path component / file extension.
+
 						     *c_CTRL-G_I* *c_CTRL-G_A*
 CTRL-G I		Group any existing regexp branches and position the
 			cursor at the beginning (but behind a |/^| anchor).
@@ -81,6 +89,52 @@ CTRL-G A		Group any existing regexp branches and position the
 			These are useful to prepend / append a common prefix /
 			suffix to different pattern branches, e.g.:
 			    bar\|baz -> \%(bar\|baz\) ~
+								  *c_CTRL-G_y*
+CTRL-G y		Yank the current command-line (to the default
+			register).
+
+			 *c_CTRL-R_CTRL-G* *c_CTRL-R_CTRL-L* *c_CTRL-R_CTRL-S*
+CTRL-R CTRL-S		Insert the character under the cursor.
+CTRL-R CTRL-L		Insert the current line (without leading indent and
+			trailing spaces).
+CTRL-R CTRL-G		Insert the current selected text.
+							     *c_CTRL-R_CTRL-V*
+CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
+			Insert the contents of a register for literal search.
+			(Prepends |/\V| and escapes backslashes and the search
+			delimiter.)
+									  *:#*
+:#			Alias for :'[,'] (like :* is a synonym for :'<,'>)
+
+
+				      *CmdlineSpecialEdits-SpecialSearchModes*
+*//* *??* */?* *?/* */_* *?_* */star* *?star* *///* *???* *//?* *??/* *//_* *??_*
+//, ??			Perform a literal search. (Only after a search
+			pattern, to keep the idiom of //e to repeat the search
+			but jump to the end.)
+/?, ?/			Perform a case-insensitive search. Both when
+			initiating a search as well as inside a search
+			command-line (where repeated use will toggle the
+			special search mode).
+/_, ?_			Perform a search that ignores whitespace differences
+			and comment prefixes.
+/*, ?*			Perform a search that ignores whitespace differences
+			and comment prefixes, and also allowing direct
+			concatenation of lines (i.e. without any whitespace in
+			between).
+///, ???		Use the last search pattern and toggle from literal to
+			normal search and vice versa.
+//?, ??/		Use the last search pattern and toggle from
+			case-insensitive to normal search and vice versa.
+//_, ??_		Use the last search pattern and toggle from
+			whitespace-flexible to normal search and vice versa.
+
+							     *ALT-/* *c_ALT-/*
+<A-/>, c_ALT-/		Toggle search mode between normal, case-insensitive,
+			and literal.
+							     *ALT-?* *c_ALT-?*
+<A-S-/>, c_ALT-SHIFT-/	Toggle search mode between whole word (\<...\>) and
+			normal matching.
 
 ==============================================================================
 INSTALLATION				    *CmdlineSpecialEdits-installation*
@@ -114,6 +168,12 @@ The |c_CTRL-G_'| command also uses small offsets for nearby marks. The default
 is +/-3 lines; change it via: >
     let g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset = 0
 <
+			*g:CmdlineSpecialEdits_EnableSpecialSearchMode*
+If you don't want the |CmdlineSpecialEdits-SpecialSearchModes| (e.g. //, /?,
+/_), you can turn them off via >
+    let g:CmdlineSpecialEdits_EnableSpecialSearchMode = 0
+Remapping to other keys isn't possible here.
+
 						   *CmdlineSpecialEdits-remap*
 If you want to use different mappings, map your keys to the
 <Plug>(CmdlineSpecialEdits...) mapping targets _before_ sourcing the script
@@ -123,7 +183,21 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-c> <Plug>(CmdlineSpecialRemoveCommandName)
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
-    cmap <C-g>'	    <Plug>(CmdlineSpecialToggleSymbolicRange)
+    cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
+    cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
+    cmap <C-BS> <Plug>(CmdlineSpecialRemoveLastPathComponent)
+    cmap <C-g>I <Plug>(CmdlineSpecialAddPrefix)
+    cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
+    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
+    cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
+    cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
+    cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
+    cmap # <Plug>(CmdlineSpecialLastChangeRange)
+    nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
+    cmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
+    nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
+    cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 <
 ==============================================================================
 INTEGRATION				     *CmdlineSpecialEdits-integration*
@@ -147,7 +221,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2012-2015 Ingo Karkat
+Copyright: (C) 2012-2017 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
