@@ -20,18 +20,17 @@ function! CmdlineSpecialEdits#Simplify#Branches()
 	return l:searchPattern
     endif
 
-    return s:SimplifyBranches(l:branches)
+    return call('s:SimplifyBranches', ingo#list#lcs#FindAllCommon(l:branches, 1, 0))
 endfunction
-function! s:SimplifyBranches( branches )
-    let [l:distinctLists, l:commons] = ingo#list#lcs#FindAllCommon(a:branches, 1, 0)
+function! s:SimplifyBranches( distinctLists, commons )
 
     " For pattern branches, we only need to specify each branch once.
-    call map(l:distinctLists, 'ingo#collections#UniqueStable(v:val)')
+    call map(a:distinctLists, 'ingo#collections#UniqueStable(v:val)')
 
     let l:result = []
-    while ! empty(l:distinctLists) || ! empty(l:commons)
-	if ! empty(l:distinctLists)
-	    let l:distinctList = remove(l:distinctLists, 0)
+    while ! empty(a:distinctLists) || ! empty(a:commons)
+	if ! empty(a:distinctLists)
+	    let l:distinctList = remove(a:distinctLists, 0)
 	    let l:originalLen = len(l:distinctList)
 	    call filter(l:distinctList, '! empty(v:val)')
 	    let l:hadEmptyRemoved = (len(l:distinctList) < l:originalLen)
@@ -53,8 +52,8 @@ function! s:SimplifyBranches( branches )
 	    call add(l:result, l:distinct . (l:hadEmptyRemoved ? '\?' : ''))
 	endif
 
-	if ! empty(l:commons)
-	    call add(l:result, remove(l:commons, 0))
+	if ! empty(a:commons)
+	    call add(l:result, remove(a:commons, 0))
 	endif
     endwhile
 
