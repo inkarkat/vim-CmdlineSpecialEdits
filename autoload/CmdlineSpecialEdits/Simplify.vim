@@ -2,6 +2,11 @@
 "
 " DEPENDENCIES:
 "   - CmdlineSpecialEdits.vim autoload script
+"   - ingo/collections.vim autoload script
+"   - ingo/collections/find.vim autoload script
+"   - ingo/compat.vim autoload script
+"   - ingo/list/lcs.vim autoload script
+"   - ingo/regexp/collection.vim autoload script
 "
 " Copyright: (C) 2017 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
@@ -10,6 +15,9 @@
 "
 " REVISION	DATE		REMARKS
 "	002	29-Jul-2017	Fix problems in algorithm.
+"				Get alternatives for 1..3 common length, and
+"				choose the shortest one; prefering longer common
+"				length among equals.
 "	001	24-Jul-2017	file creation
 
 function! CmdlineSpecialEdits#Simplify#Branches()
@@ -20,7 +28,8 @@ function! CmdlineSpecialEdits#Simplify#Branches()
 	return l:searchPattern
     endif
 
-    return call('s:SimplifyBranches', ingo#list#lcs#FindAllCommon(l:branches, 1, 0))
+    let l:commonLengthAlternatives = map(range(1, 3), "call('s:SimplifyBranches', ingo#list#lcs#FindAllCommon(l:branches, v:val, 0))")
+    return get(ingo#collections#find#Lowest(l:commonLengthAlternatives, 'ingo#compat#strchars(v:val)'), -1, '') " -1: Prefer longer common length.
 endfunction
 function! s:SimplifyBranches( distinctLists, commons )
 
