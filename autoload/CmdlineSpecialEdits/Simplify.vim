@@ -9,6 +9,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	29-Jul-2017	Fix problems in algorithm.
 "	001	24-Jul-2017	file creation
 
 function! CmdlineSpecialEdits#Simplify#Branches()
@@ -22,7 +23,7 @@ function! CmdlineSpecialEdits#Simplify#Branches()
     return s:SimplifyBranches(l:branches)
 endfunction
 function! s:SimplifyBranches( branches )
-    let [l:distinctLists, l:commons] = ingo#list#lcs#FindAllCommon(a:branches, 1, 1)
+    let [l:distinctLists, l:commons] = ingo#list#lcs#FindAllCommon(a:branches, 1, 0)
 
     " For pattern branches, we only need to specify each branch once.
     call map(l:distinctLists, 'ingo#collections#UniqueStable(v:val)')
@@ -30,18 +31,26 @@ function! s:SimplifyBranches( branches )
     let l:result = []
     while ! empty(l:distinctLists) || ! empty(l:commons)
 	if ! empty(l:distinctLists)
-	    let l:distinctList = filter(remove(l:distinctLists, 0), '! empty(v:val)')
+	    let l:distinctList = remove(l:distinctLists, 0)
+	    let l:originalLen = len(l:distinctList)
+	    call filter(l:distinctList, '! empty(v:val)')
+	    let l:hadEmptyRemoved = (len(l:distinctList) < l:originalLen)
 
-	    if len(l:distinctList) <= 1
-		let l:distinct = get(l:distinctList, 0, '')
+	    if len(l:distinctList) == 0
+		let l:distinct = ''
+	    elseif len(l:distinctList) == 1
+		let l:distinct = l:distinctList[0]
+		if l:hadEmptyRemoved
+		    let l:distinct = '\%(' . l:distinct . '\)'
+		endif
 	    elseif max(map(copy(l:distinctList), 'len(v:val)')) == 1
 		" Use collection.
-		let l:distinct = '[' . ingo#regexp#collection#LiteralToRegexp(join(l:distinctList, '')) . ']'
+		let l:distinct = ingo#regexp#collection#LiteralToRegexp(join(l:distinctList, ''))
 	    else
 		" Use branches.
 		let l:distinct = '\%(' . join(l:distinctList, '\|') . '\)'
 	    endif
-	    call add(l:result, l:distinct)
+	    call add(l:result, l:distinct . (l:hadEmptyRemoved ? '\?' : ''))
 	endif
 
 	if ! empty(l:commons)
