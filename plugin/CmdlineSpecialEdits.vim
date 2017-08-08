@@ -91,6 +91,11 @@ if ! hasmapto('<Plug>(CmdlineSpecialAddSuffix)', 'c')
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
 endif
 
+cnoremap <Plug>(CmdlineSpecialSimplifyBranches) <C-\>e(CmdlineSpecialEdits#Simplify#Branches())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialSimplifyBranches)', 'c')
+    cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
+endif
+
 cnoremap <C-g>y <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialYankCommandLine)', 'c')
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
