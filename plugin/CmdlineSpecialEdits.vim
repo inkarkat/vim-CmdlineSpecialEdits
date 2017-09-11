@@ -10,6 +10,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	008	09-Aug-2017	BUG: Missed function renaming in cmap <A-/>.
 "	007	24-Jul-2017	Add many command-line related mappings from
 "				ingomappings.vim.
 "	006	30-Mar-2015	Add mappings for adding regexp prefix / suffix.
@@ -135,7 +136,7 @@ if g:CmdlineSpecialEdits_EnableSpecialSearchMode
 endif
 
 nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
-cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '<C-x>' : '<C-\>e(CmdlineSpecialToggleSearchMode(getcmdline()))<CR>')
+cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '<C-x>' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleMode(getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'n')
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
 endif
