@@ -3,12 +3,13 @@
 " DEPENDENCIES:
 "   - CmdlineSpecialEdits.vim autoload script
 "
-" Copyright: (C) 2015 Ingo Karkat
+" Copyright: (C) 2015-2017 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	24-Jul-2017	Add CmdlineSpecialEdits#Edit#YankCommandLine().
 "	001	30-Mar-2015	file creation
 
 function! CmdlineSpecialEdits#Edit#AddPrefix()
@@ -32,6 +33,11 @@ function! CmdlineSpecialEdits#Edit#AddSuffix()
 
     call setcmdpos(strlen(l:pattern) + 1)
     return l:pattern . l:endAnchor
+endfunction
+
+function! CmdlineSpecialEdits#Edit#YankCommandLine( cmdline )
+    let @" = a:cmdline
+    return a:cmdline
 endfunction
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
