@@ -13,6 +13,9 @@
 " REVISION	DATE		REMARKS
 "	002	28-Dec-2014	Allow to configure all considered marks via
 "				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
+"				Roll s:FindRelativeLine() into s:FindMark() via
+"				the special mark "#". This makes this (and its
+"				precedence) configurable, too.
 "	001	25-Dec-2014	file creation
 let s:save_cpo = &cpo
 set cpo&vim
@@ -61,12 +64,20 @@ function! s:FindMark( lnum, offset )
     \       split(g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks, '\zs'),
     \       'index([0, ' . bufnr('.') . '], getpos("''" . v:val)[0]) != -1'
     \   )
-	let l:markLnum = line("'" . l:mark)
+	if l:mark ==# '#'
+	    " Also support the current line "." (configurable via the special
+	    " mark "#"), even though it's not a mark.
+	    let l:markRange = '.'
+	else
+	    let l:markRange = "'" . l:mark
+	endif
+	let l:markLnum = line(l:markRange)
+
 	if l:markLnum > 0
 	    if l:markLnum + a:offset == a:lnum
-		return "'" . l:mark . (a:offset > 0 ? '+' . a:offset : '')
+		return l:markRange . (a:offset > 0 ? '+' . a:offset : '')
 	    elseif l:markLnum - a:offset == a:lnum
-		return "'" . l:mark . (a:offset > 0 ? '-' . a:offset : '')
+		return l:markRange . (a:offset > 0 ? '-' . a:offset : '')
 	    endif
 	endif
     endfor
@@ -75,20 +86,7 @@ function! s:FindMark( lnum, offset )
 	return s:FindMark(a:lnum, a:offset + 1)
     endif
 
-    " Also support the current line ".", even though it's not a mark.
-    return s:FindRelativeLine(a:lnum, 0)
-endfunction
-function! s:FindRelativeLine( lnum, offset )
-    if line('.') + a:offset == a:lnum
-	return '.' . (a:offset > 0 ? '+' . a:offset : '')
-    elseif line('.') - a:offset == a:lnum
-	return '.' . (a:offset > 0 ? '-' . a:offset : '')
-    endif
-
-    if a:offset <= g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset
-	return s:FindRelativeLine(a:lnum, a:offset + 1)
-    endif
-    return a:lnum
+    return a:lnum   " Nothing found.
 endfunction
 
 let &cpo = s:save_cpo
