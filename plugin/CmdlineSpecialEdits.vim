@@ -10,6 +10,9 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	009	12-Sep-2017	BUG: Missed replacing some left-hand side
+"				original mapping with their new
+"				<Plug>-equivalents.
 "	008	09-Aug-2017	BUG: Missed function renaming in cmap <A-/>.
 "	007	24-Jul-2017	Add many command-line related mappings from
 "				ingomappings.vim.
@@ -78,7 +81,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialRemoveBackspacing)', 'c')
     cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
 endif
 
-cnoremap <C-BS> <C-\>e(CmdlineSpecialEdits#Remove#LastPathComponent())<CR>
+cnoremap <Plug>(CmdlineSpecialRemoveLastPathComponent) <C-\>e(CmdlineSpecialEdits#Remove#LastPathComponent())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialRemoveLastPathComponent)', 'c')
     cmap <C-BS> <Plug>(CmdlineSpecialRemoveLastPathComponent)
 endif
@@ -97,7 +100,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialSimplifyBranches)', 'c')
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
 endif
 
-cnoremap <C-g>y <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
+cnoremap <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialYankCommandLine)', 'c')
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
 endif
@@ -117,7 +120,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialInsertChar)', 'c')
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
 endif
 
-cnoremap <silent> <C-r><C-v> <C-r><C-r>='\V' . escape(getreg(ingo#query#get#Register('\')), '\'.matchstr(getcmdtype(), '[/?]'))<CR>
+cnoremap <silent> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch) <C-r><C-r>='\V' . escape(getreg(ingo#query#get#Register('\')), '\'.matchstr(getcmdtype(), '[/?]'))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)', 'c')
     cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
 endif
