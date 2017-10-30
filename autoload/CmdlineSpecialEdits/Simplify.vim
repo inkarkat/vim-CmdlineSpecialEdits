@@ -19,6 +19,8 @@
 "				choose the shortest one; prefering longer common
 "				length among equals.
 "	001	24-Jul-2017	file creation
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! CmdlineSpecialEdits#Simplify#Branches()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
@@ -28,11 +30,22 @@ function! CmdlineSpecialEdits#Simplify#Branches()
 	return l:searchPattern
     endif
 
-    let l:commonLengthAlternatives = map(range(1, 3), "call('s:SimplifyBranches', ingo#list#lcs#FindAllCommon(l:branches, v:val, 0))")
-    return get(ingo#collections#find#Lowest(l:commonLengthAlternatives, 'ingo#compat#strchars(v:val)'), -1, '') " -1: Prefer longer common length.
+    " Try minimum common lengths of 1..3, with minimum distinct lengths of
+    " either 1 or 0.
+    let l:commonLengthAlternatives =
+    \   map(range(1, 3), "ingo#list#lcs#FindAllCommon(l:branches, v:val, 1)") +
+    \   map(range(1, 3), "ingo#list#lcs#FindAllCommon(l:branches, v:val, 0)")
+
+    " Remove those alternatives that have no common substrings; there would be
+    " no change to the original.
+    call filter(l:commonLengthAlternatives, '! empty(v:val[1])')
+
+    let l:alternativeBranches = map(l:commonLengthAlternatives, 'call("s:SimplifyBranches", v:val)')
+
+    " Use the alternative that yields the shortest regexp.
+    return get(ingo#collections#find#Lowest(l:commonLengthAlternatives, 'ingo#compat#strchars(v:val)'), -1, '') " -1: Prefer longer common length and no distinct length in case there are alternatives with equal length.
 endfunction
 function! s:SimplifyBranches( distinctLists, commons )
-
     " For pattern branches, we only need to specify each branch once.
     call map(a:distinctLists, 'ingo#collections#UniqueStable(v:val)')
 
@@ -69,4 +82,6 @@ function! s:SimplifyBranches( distinctLists, commons )
     return join(l:result, '')
 endfunction
 
+let &cpo = s:save_cpo
+unlet s:save_cpo
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
