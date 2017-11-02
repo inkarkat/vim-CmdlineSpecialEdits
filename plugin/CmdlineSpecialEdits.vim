@@ -10,6 +10,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	010	31-Oct-2017	Don't insert literal ^X in non-search
+"				command-line on <A-/> / <A-?>.
 "	009	12-Sep-2017	BUG: Missed replacing some left-hand side
 "				original mapping with their new
 "				<Plug>-equivalents.
@@ -139,7 +141,7 @@ if g:CmdlineSpecialEdits_EnableSpecialSearchMode
 endif
 
 nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
-cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '<C-x>' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleMode(getcmdline()))<CR>')
+cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleMode(getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'n')
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
 endif
@@ -148,7 +150,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'c')
 endif
 
 nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
-cnoremap <expr> <Plug>(CmdlineSpecialToggleWholeWord) (stridx('/?', getcmdtype()) == -1 ? '<C-x>' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleWholeWord("c", getcmdline()))<CR>')
+cnoremap <expr> <Plug>(CmdlineSpecialToggleWholeWord) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleWholeWord("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'n')
     nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 endif
