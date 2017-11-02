@@ -89,6 +89,10 @@ CTRL-G A		Group any existing regexp branches and position the
 			These are useful to prepend / append a common prefix /
 			suffix to different pattern branches, e.g.:
 			    bar\|baz -> \%(bar\|baz\) ~
+
+CTRL-G s		Simplify regexp branches of the search pattern by
+			extracting common substrings. For example:
+			/myFoobar\|theFoony -> /\%(my\|the\)Foo\%(bar\|ny\) ~
 								  *c_CTRL-G_y*
 CTRL-G y		Yank the current command-line (to the default
 			register).
@@ -150,7 +154,7 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.010 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.032 or
   higher.
 
 ==============================================================================
