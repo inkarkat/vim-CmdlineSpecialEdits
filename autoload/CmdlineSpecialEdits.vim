@@ -2,12 +2,14 @@
 "
 " DEPENDENCIES:
 "
-" Copyright: (C) 2012-2015 Ingo Karkat
+" Copyright: (C) 2012-2017 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	006	31-Oct-2017	Allow overriding cmdtype used for history
+"				recall.
 "	005	30-Mar-2015	Use current command-line type instead of
 "				always Ex command history.
 "	004	20-Jun-2014	Add toggling between :substitute and :SmartCase
@@ -20,9 +22,10 @@
 "				range.
 "	001	19-Jun-2012	file creation
 
-function! CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
+function! CmdlineSpecialEdits#GetCurrentOrPreviousCmdline( ... )
     if empty(getcmdline())
-	return [histget(getcmdtype(), -1), '']
+	let l:cmdtype = (a:0 ? a:1 : getcmdtype())
+	return [histget(l:cmdtype, -1), '']
     else
 	return [strpart(getcmdline(), 0, getcmdpos() - 1), strpart(getcmdline(), getcmdpos() - 1)]
     endif
