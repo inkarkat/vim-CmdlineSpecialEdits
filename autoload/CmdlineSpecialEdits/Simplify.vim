@@ -14,6 +14,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	31-Oct-2017	DWIM: Always recall from search history, not
+"				command-line history.
 "	002	29-Jul-2017	Fix problems in algorithm.
 "				Get alternatives for 1..3 common length, and
 "				choose the shortest one; prefering longer common
@@ -23,7 +25,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! CmdlineSpecialEdits#Simplify#Branches()
-    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
+    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline('/')
     let l:searchPattern = l:cmdlineBeforeCursor . l:cmdlineAfterCursor
     let l:branches = split(l:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\|', 1)
     if len(l:branches) < 2
