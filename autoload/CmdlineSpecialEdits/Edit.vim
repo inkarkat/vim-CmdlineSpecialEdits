@@ -9,11 +9,13 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	31-Oct-2017	DWIM: Always recall from search history, not
+"				command-line history.
 "	002	24-Jul-2017	Add CmdlineSpecialEdits#Edit#YankCommandLine().
 "	001	30-Mar-2015	file creation
 
 function! CmdlineSpecialEdits#Edit#AddPrefix()
-    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
+    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline('/')
 
     let [l:startAnchor, l:pattern] = matchlist(l:cmdlineBeforeCursor . l:cmdlineAfterCursor, '^\(\^\|\\%\^\)\?\(.*\)$')[1:2]
     if l:pattern !~# '^\\%\?(.*\\)$'
@@ -24,7 +26,7 @@ function! CmdlineSpecialEdits#Edit#AddPrefix()
     return l:startAnchor . l:pattern
 endfunction
 function! CmdlineSpecialEdits#Edit#AddSuffix()
-    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
+    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline('/')
 
     let [l:pattern, l:endAnchor] = matchlist(l:cmdlineBeforeCursor . l:cmdlineAfterCursor, '^\(.\{-}\)\(\$\|\\%\$\)\?$')[1:2]
     if l:pattern !~# '^\\%\?(.*\\)$'
