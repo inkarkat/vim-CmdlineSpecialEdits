@@ -139,6 +139,8 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 							     *ALT-?* *c_ALT-?*
 <A-S-/>, c_ALT-SHIFT-/	Toggle search mode between whole word (\<...\>) and
 			normal matching.
+							     *ALT-(* *c_ALT-(*
+<A-(>, c_ALT-(		(Un-)wrap search pattern in capturing group \(...\).
 
 ==============================================================================
 INSTALLATION				    *CmdlineSpecialEdits-installation*
