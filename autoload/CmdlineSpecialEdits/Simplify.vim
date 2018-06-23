@@ -14,6 +14,9 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	004	21-Nov-2017	ENH: Use new
+"				CmdlineSpecialEdits#ParseCurrentOrPreviousPattern()
+"				to also handle patterns within Ex commands.
 "	003	31-Oct-2017	DWIM: Always recall from search history, not
 "				command-line history.
 "	002	29-Jul-2017	Fix problems in algorithm.
@@ -25,11 +28,10 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! CmdlineSpecialEdits#Simplify#Branches()
-    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline('/')
-    let l:searchPattern = l:cmdlineBeforeCursor . l:cmdlineAfterCursor
+    let [l:cmdlineBeforePattern, l:searchPattern, l:cmdlineAfterPattern] = CmdlineSpecialEdits#ParseCurrentOrPreviousPattern('/')
     let l:branches = split(l:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\|', 1)
     if len(l:branches) < 2
-	return l:searchPattern
+	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
     endif
 
     " Try minimum common lengths of 1..3, with minimum distinct lengths of
@@ -45,7 +47,8 @@ function! CmdlineSpecialEdits#Simplify#Branches()
     let l:alternativeBranches = map(l:commonLengthAlternatives, 'call("s:SimplifyBranches", v:val)')
 
     " Use the alternative that yields the shortest regexp.
-    return get(ingo#collections#find#Lowest(l:commonLengthAlternatives, 'ingo#compat#strchars(v:val)'), -1, '') " -1: Prefer longer common length and no distinct length in case there are alternatives with equal length.
+    let l:simplifiedPattern =  get(ingo#collections#find#Lowest(l:commonLengthAlternatives, 'ingo#compat#strchars(v:val)'), -1, '') " -1: Prefer longer common length and no distinct length in case there are alternatives with equal length.
+    return l:cmdlineBeforePattern . l:simplifiedPattern . l:cmdlineAfterPattern
 endfunction
 function! s:SimplifyBranches( distinctLists, commons )
     " For pattern branches, we only need to specify each branch once.
