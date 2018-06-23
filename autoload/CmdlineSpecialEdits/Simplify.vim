@@ -7,13 +7,15 @@
 "   - ingo/compat.vim autoload script
 "   - ingo/list/lcs.vim autoload script
 "   - ingo/regexp/collection.vim autoload script
+"   - ingo/regexp/split.vim autoload script
 "
-" Copyright: (C) 2017 Ingo Karkat
+" Copyright: (C) 2017-2018 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	005	24-Jun-2018	Use ingo#regexp#split#TopLevelBranches().
 "	004	21-Nov-2017	ENH: Use new
 "				CmdlineSpecialEdits#ParseCurrentOrPreviousPattern()
 "				to also handle patterns within Ex commands.
@@ -29,7 +31,7 @@ set cpo&vim
 
 function! CmdlineSpecialEdits#Simplify#Branches()
     let [l:cmdlineBeforePattern, l:searchPattern, l:cmdlineAfterPattern] = CmdlineSpecialEdits#ParseCurrentOrPreviousPattern('/')
-    let l:branches = split(l:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\|', 1)
+    let l:branches = ingo#regexp#split#TopLevelBranches(l:searchPattern)
     if len(l:branches) < 2
 	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
     endif
