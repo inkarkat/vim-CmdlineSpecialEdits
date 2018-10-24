@@ -10,6 +10,9 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	011	03-Nov-2017	ENH: Add <A-(> mapping that (un-)wraps regexp in
+"				grouping \(...\), similar to what <A-/> does
+"				with whole word matching.
 "	010	31-Oct-2017	Don't insert literal ^X in non-search
 "				command-line on <A-/> / <A-?>.
 "	009	12-Sep-2017	BUG: Missed replacing some left-hand side
@@ -156,6 +159,15 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'n')
 endif
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'c')
     cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
+endif
+
+nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+cnoremap <expr> <Plug>(CmdlineSpecialToggleGrouping) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleGrouping("c", getcmdline()))<CR>')
+if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'n')
+    nmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)
+endif
+if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'c')
+    cmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)
 endif
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
