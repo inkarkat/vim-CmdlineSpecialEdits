@@ -156,7 +156,7 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.032 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.034 or
   higher.
 
 ==============================================================================
@@ -227,7 +227,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2012-2017 Ingo Karkat
+Copyright: (C) 2012-2018 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
