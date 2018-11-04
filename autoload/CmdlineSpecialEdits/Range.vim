@@ -5,12 +5,13 @@
 "   - ingo/cmdargs/range.vim autoload script
 "   - ingo/range/lines.vim autoload script
 "
-" Copyright: (C) 2014 Ingo Karkat
+" Copyright: (C) 2014-2017 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	31-Oct-2017	Handle failure to parse command-line.
 "	002	28-Dec-2014	Allow to configure all considered marks via
 "				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
 "				Roll s:FindRelativeLine() into s:FindMark() via
@@ -24,6 +25,7 @@ function! CmdlineSpecialEdits#Range#ToggleSymbolic()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
 
     let l:commandParse = ingo#cmdargs#range#Parse(l:cmdlineBeforeCursor)
+    if empty(l:commandParse) | return getcmdline() | endif
     let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:remainder] = l:commandParse
 
     let l:commandWithToggledRange = join([l:combiner, l:commandCommands, s:ToggleRange(l:range), l:remainder], '')
