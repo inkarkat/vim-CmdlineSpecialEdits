@@ -19,15 +19,14 @@ This plugin ...
 
 HOW IT WORKS								     *
 
-SEE ALSO								     *
+SOURCE									     *
 
 - CTRL-G ' inspired by
     http://superuser.com/questions/856533/vim-visual-mode-search-and-replace
 - CTRL-BS based on http://vim.wikia.com/wiki/Command_line_file_name_completion
-
-RELATED WORKS								     *
-
-- The |c_CTRL-G_CTRL-U| mapping was inspired by
+- CTRL-G D inspired by
+    https://unix.stackexchange.com/questions/408980/delete-to-end-of-command-line-in-vim
+- CTRL-G CTRL-U inspired by
    http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406#11013406
 
 ==============================================================================
@@ -53,6 +52,9 @@ CTRL-G CTRL-C		Remove the closest previous command from the command
 			command.
 			When used on an empty command line, recalls the
 			previous command-line from history first.
+CTRL-G D		Remove all characters between the cursor position and
+			the end of the line. Like |c_CTRL-U|, but in the other
+			direction. Like |D|, but in command-line mode.
 CTRL-G '		Change symbolic ranges like '<,'> to the actual line
 			numbers, and vice versa.
 			Useful to be able to repeat a command on the same
