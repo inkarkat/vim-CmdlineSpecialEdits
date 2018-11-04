@@ -4,7 +4,7 @@
 "   - Requires Vim 7.0 or higher.
 "   - CmdlineSpecialEdits/*.vim autoload scripts
 "
-" Copyright: (C) 2012-2017 Ingo Karkat
+" Copyright: (C) 2012-2018 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -74,6 +74,11 @@ endif
 cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#SmartCase#ToggleCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#SmartCase#TogglePattern())<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
+endif
+
+cnoremap <Plug>(CmdlineSpecialDeleteToEnd) <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialDeleteToEnd)', 'c')
+    cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
 endif
 
 cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
