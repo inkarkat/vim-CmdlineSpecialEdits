@@ -5,12 +5,16 @@
 "   - ingo/cmdargs/range.vim autoload script
 "   - ingo/range/lines.vim autoload script
 "
-" Copyright: (C) 2014-2017 Ingo Karkat
+" Copyright: (C) 2014-2018 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	004	05-Nov-2018	Refactoring: Split off s:ChangeRange() from
+"                               CmdlineSpecialEdits#Range#ToggleSymbolic().
+"                               ENH: Implement
+"                               CmdlineSpecialEdits#Range#ToggleRelative().
 "	003	31-Oct-2017	Handle failure to parse command-line.
 "	002	28-Dec-2014	Allow to configure all considered marks via
 "				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
@@ -21,19 +25,23 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! CmdlineSpecialEdits#Range#ToggleSymbolic()
+function! s:ChangeRange( Changer )
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
 
     let l:commandParse = ingo#cmdargs#range#Parse(l:cmdlineBeforeCursor)
     if empty(l:commandParse) | return getcmdline() | endif
     let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:remainder] = l:commandParse
 
-    let l:commandWithToggledRange = join([l:combiner, l:commandCommands, s:ToggleRange(l:range), l:remainder], '')
+    let l:commandWithToggledRange = join([l:combiner, l:commandCommands, call(a:Changer, [l:range]), l:remainder], '')
 
     let l:previousCommands = strpart(l:cmdlineBeforeCursor, 0, strridx(l:cmdlineBeforeCursor, l:fullCommandUnderCursor))
     let l:cmdlineWithoutArguments = l:previousCommands . l:commandWithToggledRange
     call setcmdpos(strlen(l:cmdlineWithoutArguments) + 1)
     return l:cmdlineWithoutArguments . l:cmdlineAfterCursor
+endfunction
+
+function! CmdlineSpecialEdits#Range#ToggleSymbolic()
+    return s:ChangeRange(function(s:ToggleRange'))
 endfunction
 function! s:ToggleRange( range )
     if a:range =~# '^\d\+\%(,\d*\)\?$'
@@ -89,6 +97,55 @@ function! s:FindMark( lnum, offset )
     endif
 
     return a:lnum   " Nothing found.
+endfunction
+
+function! CmdlineSpecialEdits#Range#ToggleRelative()
+    return s:ChangeRange(function('s:ToggleRelative'))
+endfunction
+function! s:ToggleRelative( range )
+    let l:parse = matchlist(a:range, '^\(\.\?\)\([+-]\?\)\(\d*\)\%(,\(\.\?\)\([+-]\?\)\(\d*\)\)\?$')
+    if empty(l:parse)
+	return a:range
+    endif
+
+    let [l:startLnum, l:wasStartRelative] = s:ParseAddress(l:parse[1], l:parse[2], l:parse[3])
+    let [l:endLnum, l:wasEndRelative]     = s:ParseAddress(l:parse[4], l:parse[5], l:parse[6])
+
+    if l:endLnum && l:startLnum > l:endLnum
+	" Correct backwards range.
+	let [l:startLnum, l:endLnum] = [l:endLnum, l:startLnum]
+    endif
+
+    if l:wasStartRelative && (! l:endLnum || l:wasEndRelative)
+	return l:startLnum . (l:endLnum ? ',' . l:endLnum : '')
+    else
+	return s:LnumToRelative(l:startLnum) . (l:endLnum ? ',' . s:LnumToRelative(l:endLnum) : '')
+    endif
+endfunction
+function! s:ParseAddress( base, sigil, number )
+    if empty(a:base) && empty(a:sigil) && empty(a:number)
+	return [0, 0]
+    endif
+
+    let l:isRelative = ! empty(a:base) || ! empty(a:sigil)
+    let l:lnum = (l:isRelative ?
+    \   line('.') + (a:sigil ==# '-' ? -1 : 1) * a:number :
+    \   (empty(a:number) ? line('.') : a:number)
+    \)
+
+    " Correct out-of-bounds line number.
+    return [min([line('$'), max([1, l:lnum])]), l:isRelative]
+endfunction
+function! s:LnumToRelative( lnum )
+    let l:offset = a:lnum - line('.')
+
+    return (l:offset == 0 ?
+    \   '.' :
+    \   (l:offset > 0 ?
+    \       '.+' . l:offset :
+    \       '.' . l:offset
+    \   )
+    \)
 endfunction
 
 let &cpo = s:save_cpo
