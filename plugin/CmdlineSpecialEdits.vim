@@ -10,6 +10,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	012	05-Nov-2018	ENH: Add <C-g>+ mapping that converts between
+"                               relative and absolute range addresses.
 "	011	03-Nov-2017	ENH: Add <A-(> mapping that (un-)wraps regexp in
 "				grouping \(...\), similar to what <A-/> does
 "				with whole word matching.
@@ -84,6 +86,11 @@ endif
 cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSymbolicRange)', 'c')
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
+endif
+
+cnoremap <Plug>(CmdlineSpecialToggleRelativeRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleRelative())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialToggleRelativeRange)', 'c')
+    cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
 endif
 
 cnoremap <Plug>(CmdlineSpecialRemoveBackspacing) <C-\>e(CmdlineSpecialEdits#Remove#Backspacing(getcmdline()))<CR>
