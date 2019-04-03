@@ -23,11 +23,14 @@ SOURCE									     *
 
 - CTRL-G ' inspired by
     http://superuser.com/questions/856533/vim-visual-mode-search-and-replace
-- CTRL-BS based on http://vim.wikia.com/wiki/Command_line_file_name_completion
+- CTRL-BS based on
+    http://vim.wikia.com/wiki/Command_line_file_name_completion
 - CTRL-G D inspired by
     https://unix.stackexchange.com/questions/408980/delete-to-end-of-command-line-in-vim
 - CTRL-G CTRL-U inspired by
-   http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406#11013406
+    http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406
+- CTRL-G + inspired by
+    https://stackoverflow.com/questions/53124198/select-relative-range-ignoring-invalid-line-numbers/53154241
 
 ==============================================================================
 USAGE						   *CmdlineSpecialEdits-usage*
@@ -52,15 +55,22 @@ CTRL-G CTRL-C		Remove the closest previous command from the command
 			command.
 			When used on an empty command line, recalls the
 			previous command-line from history first.
+								  *c_CTRL-G_D*
 CTRL-G D		Remove all characters between the cursor position and
 			the end of the line. Like |c_CTRL-U|, but in the other
 			direction. Like |D|, but in command-line mode.
+								  *c_CTRL-G_'*
 CTRL-G '		Change symbolic ranges like '<,'> to the actual line
 			numbers, and vice versa.
 			Useful to be able to repeat a command on the same
 			range, even when the selection changes.
 			When used on an empty command line, recalls the
 			previous command-line from history first.
+								  *c_CTRL-G_+*
+CTRL-G +		Change relative ranges like .-5,.+5 to absolute line
+			numbers and vice versa. Also corrects addressing out
+			of bounds (<= 0 and larger than the last line number)
+			and backwards ranges.
 							     *c_CTRL-G_CTRL-O*
 CTRL-G CTRL-O		Recall older command-line from history, whose
 			beginning matches the current command-line, regardless
@@ -192,6 +202,7 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
+    cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
     cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
     cmap <C-BS> <Plug>(CmdlineSpecialRemoveLastPathComponent)
     cmap <C-g>I <Plug>(CmdlineSpecialAddPrefix)
