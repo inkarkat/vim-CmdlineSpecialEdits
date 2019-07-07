@@ -101,7 +101,7 @@ CTRL-G A		Group any existing regexp branches and position the
 			These are useful to prepend / append a common prefix /
 			suffix to different pattern branches, e.g.:
 			    bar\|baz -> \%(bar\|baz\) ~
-
+								  *c_CTRL-G_s*
 CTRL-G s		Simplify regexp branches of the search pattern by
 			extracting common substrings. For example:
 			/myFoobar\|theFoony -> /\%(my\|the\)Foo\%(bar\|ny\) ~
@@ -146,13 +146,13 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			whitespace-flexible to normal search and vice versa.
 
 							     *ALT-/* *c_ALT-/*
-<A-/>, c_ALT-/		Toggle search mode between normal, case-insensitive,
+ALT-/			Toggle search mode between normal, case-insensitive,
 			and literal.
 							     *ALT-?* *c_ALT-?*
-<A-S-/>, c_ALT-SHIFT-/	Toggle search mode between whole word (\<...\>) and
+ALT-SHIFT-/		Toggle search mode between whole word (\<...\>) and
 			normal matching.
 							     *ALT-(* *c_ALT-(*
-<A-(>, c_ALT-(		(Un-)wrap search pattern in capturing group \(...\).
+ALT-(			(Un-)wrap search pattern in capturing group \(...\).
 
 ==============================================================================
 INSTALLATION				    *CmdlineSpecialEdits-installation*
