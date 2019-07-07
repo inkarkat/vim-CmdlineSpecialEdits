@@ -4,14 +4,14 @@
 "   - Requires Vim 7.0 or higher.
 "   - CmdlineSpecialEdits/*.vim autoload scripts
 "
-" Copyright: (C) 2012-2018 Ingo Karkat
+" Copyright: (C) 2012-2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
 "	012	05-Nov-2018	ENH: Add <C-g>+ mapping that converts between
-"                               relative and absolute range addresses.
+"				relative and absolute range addresses.
 "	011	03-Nov-2017	ENH: Add <A-(> mapping that (un-)wraps regexp in
 "				grouping \(...\), similar to what <A-/> does
 "				with whole word matching.
