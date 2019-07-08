@@ -86,6 +86,14 @@ CTRL-G CTRL-S		Toggle between |:substitute| and |:SmartCase| variants.
 			When used on an empty command line, recalls the
 			previous command-line / search pattern from history
 			first.
+								  *c_CTRL-G_/*
+CTRL-G / {sep}		Change the separator of the current |:substitute| (or
+			similar command taking a /{pattern}[/{string}/]
+			argument) command to {sep}.
+			For example, when you've started a substitution with
+			the default "/" separators but now want to insert a
+			longer filespec (with Unix-style forward path
+			separators), so tedious escaping would be necessary.
 							     *c_CTRL-G_CTRL-S*
 CTRL-G CTRL-H		Apply literal <BS> and <C-h> keys (e.g. when editing a
 			macro inline via q"{reg}) by removing them and the
