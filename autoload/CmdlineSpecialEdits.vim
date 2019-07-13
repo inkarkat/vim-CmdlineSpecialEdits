@@ -4,7 +4,7 @@
 "   - ingo/cmdargs/command.vim autoload script
 "   - ingo/cmdargs/pattern.vim autoload script
 "
-" Copyright: (C) 2012-2017 Ingo Karkat
+" Copyright: (C) 2012-2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -27,6 +27,10 @@
 "				Add recall of history commands regardless of the
 "				range.
 "	001	19-Jun-2012	file creation
+
+function! CmdlineSpecialEdits#GetCurrentCmdline() abort
+    return [strpart(getcmdline(), 0, getcmdpos() - 1), strpart(getcmdline(), getcmdpos() - 1)]
+endfunction
 
 function! CmdlineSpecialEdits#GetCurrentOrPreviousCmdline( ... )
     if empty(getcmdline())
