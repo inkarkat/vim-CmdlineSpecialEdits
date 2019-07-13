@@ -94,7 +94,7 @@ CTRL-G / {sep}		Change the separator of the current |:substitute| (or
 			the default "/" separators but now want to insert a
 			longer filespec (with Unix-style forward path
 			separators), so tedious escaping would be necessary.
-							     *c_CTRL-G_CTRL-S*
+							     *c_CTRL-G_CTRL-H*
 CTRL-G CTRL-H		Apply literal <BS> and <C-h> keys (e.g. when editing a
 			macro inline via q"{reg}) by removing them and the
 			previously pressed key.
