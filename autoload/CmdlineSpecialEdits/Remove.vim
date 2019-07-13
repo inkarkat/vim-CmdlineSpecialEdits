@@ -1,16 +1,16 @@
 " CmdlineSpecialEdits/Remove.vim: Remove part of the command-line.
 "
 " DEPENDENCIES:
-"   - CmdlineSpecialEdits.vim autoload script
-"   - ingo/cmdargs/command.vim autoload script
-"   - ingo/cmdargs/range.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014-2017 Ingo Karkat
+" Copyright: (C) 2014-2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	04-Apr-2019	Use special '*' value for
+"                               ingo#cmdargs#command#Parse().
 "	002	24-Jul-2017	Add CmdlineSpecialEdits#Remove#Backspacing() and
 "				CmdlineSpecialEdits#Remove#LastPathComponent()
 "				from ingomappings.vim
@@ -31,7 +31,7 @@ endfunction
 function! CmdlineSpecialEdits#Remove#CommandArguments()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
 
-    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
+    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '*')
     if empty(l:commandParse)
 	return getcmdline()
     else
@@ -47,7 +47,7 @@ endfunction
 function! CmdlineSpecialEdits#Remove#CommandName()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
 
-    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '\%([^|]\|\\|\)*$')
+    let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '*')
     if empty(l:commandParse)
 	return getcmdline()
     else
