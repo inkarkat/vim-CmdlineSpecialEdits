@@ -1,6 +1,7 @@
 " CmdlineSpecialEdits/Literal.vim: Insert literal register into command-line.
 "
 " DEPENDENCIES:
+"   - ingo-library.vim plugin
 "
 " Copyright: (C) 2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
@@ -58,17 +59,23 @@ function! CmdlineSpecialEdits#Literal#Register() abort
 	if ! empty(l:commandParse)
 	    let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
 
-	    if l:commandName ==# 'put'
+	    if l:commandName =~# '^pu\%[t]$'
 		let l:resultBeforeCursor = s:LiteralPut(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
 		call setcmdpos(strlen(l:resultBeforeCursor) + 1)
 		return l:resultBeforeCursor . l:cmdlineAfterCursor
+	    elseif l:commandName =~# '^s\%[ubstitute]$\|^Substitute' ||
+	    \   ingo#str#Trim(l:commandDirectArgs . l:commandArgs . l:cmdlineAfterCursor) =~# '^' . ingo#cmdargs#pattern#PatternExpr() . '$'
+		" :substitute or an alike custom command.
+		let l:resultBeforeCursor =  s:LiteralSubstitute(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
+		call setcmdpos(strlen(l:resultBeforeCursor) + 1)
+		return l:resultBeforeCursor . l:cmdlineAfterCursor
 	    endif
-
-	    " Fall back to assuming a :substitute-alike command.
-	    let l:resultBeforeCursor =  s:LiteralSubstitute(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
-	    call setcmdpos(strlen(l:resultBeforeCursor) + 1)
-	    return l:resultBeforeCursor . l:cmdlineAfterCursor
 	endif
+
+	" Fall back to inserting as a literal Vimscript String.
+	let l:resultBeforeCursor = l:cmdlineBeforeCursor . string(l:registerContents)
+	call setcmdpos(strlen(l:resultBeforeCursor) + 1)
+	return l:resultBeforeCursor . l:cmdlineAfterCursor
     endif
 
     " Fall back to regexp pattern escaping.
