@@ -17,12 +17,22 @@ function! CmdlineSpecialEdits#Literal#Register() abort
     let l:registerContents = getreg(ingo#query#get#Register('\'))
 
     if getcmdtype() =~# '^[/?]$'
-	let l:escapedRegister = ingo#regexp#EscapeLiteralText(l:registerContents, getcmdtype())
-	let l:veryNoMagicRegister = '\V' . escape(l:registerContents, '\' . getcmdtype())
-	let l:literalRegister = (len(l:escapedRegister) <= len(l:veryNoMagicRegister) ?
-	\   l:escapedRegister :
-	\   l:veryNoMagicRegister
-	\)
+	let l:veryNoMagicRegister = escape(l:registerContents, '\' . getcmdtype())
+
+	let l:isVeryNoMagicSearch = (l:cmdlineBeforeCursor =~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\V\%(.*\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\m\)\@!')
+	if l:isVeryNoMagicSearch
+	    " If we already have a "very nomagic" search, stay in that mode (and
+	    " don't prepend another \V).
+	    let l:literalRegister = l:veryNoMagicRegister
+	else
+	    " Use very nomagic, or escaping of individual characters, whatever
+	    " is shorter.
+	    let l:escapedRegister = ingo#regexp#EscapeLiteralText(l:registerContents, getcmdtype())
+	    let l:literalRegister = (len(l:escapedRegister) <= len(l:veryNoMagicRegister) ?
+	    \   l:escapedRegister :
+	    \   '\V' . l:veryNoMagicRegister
+	    \)
+	endif
 
 	call setcmdpos(strlen(l:cmdlineBeforeCursor . l:literalRegister) + 1)
 	return l:cmdlineBeforeCursor . l:literalRegister . l:cmdlineAfterCursor
