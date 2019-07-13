@@ -27,7 +27,7 @@ function! CmdlineSpecialEdits#Literal#Register() abort
 	else
 	    " Use very nomagic, or escaping of individual characters, whatever
 	    " is shorter.
-	    let l:escapedRegister = ingo#regexp#EscapeLiteralText(l:registerContents, getcmdtype())
+	    let l:escapedRegister = ingo#regexp#EscapeLiteralText(l:registerContents, matchstr(getcmdtype(), '[/?]'))
 	    let l:literalRegister = (len(l:escapedRegister) <= len(l:veryNoMagicRegister) ?
 	    \   l:escapedRegister :
 	    \   '\V' . l:veryNoMagicRegister
