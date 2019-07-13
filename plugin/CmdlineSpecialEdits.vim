@@ -2,7 +2,6 @@
 "
 " DEPENDENCIES:
 "   - Requires Vim 7.0 or higher.
-"   - CmdlineSpecialEdits/*.vim autoload scripts
 "
 " Copyright: (C) 2012-2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
@@ -10,6 +9,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	013	08-Jul-2019	ENH: Add <C-g>/ mapping that converts
+"                               :substitute (or similar) pattern separators.
 "	012	05-Nov-2018	ENH: Add <C-g>+ mapping that converts between
 "				relative and absolute range addresses.
 "	011	03-Nov-2017	ENH: Add <A-(> mapping that (un-)wraps regexp in
@@ -76,6 +77,11 @@ endif
 cnoremap <expr> <Plug>(CmdlineSpecialToggleSmartCase) (stridx('/?', getcmdtype()) == -1 ? (getcmdtype() ==# ':' ? '<C-\>e(CmdlineSpecialEdits#SmartCase#ToggleCommand())<CR>' : '<C-s>') : '<C-\>e(CmdlineSpecialEdits#SmartCase#TogglePattern())<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
+endif
+
+cnoremap <silent> <Plug>(CmdlineSpecialChangeSubstitutionSep) <C-\>e(CmdlineSpecialEdits#Substitute#ChangeSeparator())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialChangeSubstitutionSep)', 'c')
+    cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
 endif
 
 cnoremap <Plug>(CmdlineSpecialDeleteToEnd) <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
