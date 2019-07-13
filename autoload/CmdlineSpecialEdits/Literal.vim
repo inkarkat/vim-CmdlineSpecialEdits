@@ -45,6 +45,10 @@ function! s:LiteralSubstitute( existingCommand, registerContents, args ) abort
 	return s:AppendLiteralPattern(a:existingCommand, a:registerContents, l:separator)
     endif
 endfunction
+function! s:LiteralPut( existingCommand, registerContents, args ) abort
+    let l:sigil = (a:args =~# '^\s*$' ? '=' : '')
+    return a:existingCommand . l:sigil . '\"' . substitute(escape(escape(a:registerContents, '\"|'), '\'), '\n', '\\n', 'g') . '\"'
+endfunction
 function! CmdlineSpecialEdits#Literal#Register() abort
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentCmdline()
     let l:registerContents = getreg(ingo#query#get#Register('\'))
@@ -53,6 +57,14 @@ function! CmdlineSpecialEdits#Literal#Register() abort
 	let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '.*$')
 	if ! empty(l:commandParse)
 	    let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+
+	    if l:commandName ==# 'put'
+		let l:resultBeforeCursor = s:LiteralPut(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
+		call setcmdpos(strlen(l:resultBeforeCursor) + 1)
+		return l:resultBeforeCursor . l:cmdlineAfterCursor
+	    endif
+
+	    " Fall back to assuming a :substitute-alike command.
 	    let l:resultBeforeCursor =  s:LiteralSubstitute(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
 	    call setcmdpos(strlen(l:resultBeforeCursor) + 1)
 	    return l:resultBeforeCursor . l:cmdlineAfterCursor
