@@ -75,10 +75,9 @@ function! CmdlineSpecialEdits#Remove#Backspacing( cmdline )
 endfunction
 
 function! CmdlineSpecialEdits#Remove#LastPathComponent()
-    let l:cmdlineBeforeCursor = strpart(getcmdline(), 0, getcmdpos() - 1)
-    let l:cmdlineAfterCursor = strpart(getcmdline(), getcmdpos() - 1)
+    let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentCmdline()
 
-    let l:cmdlineRoot = fnamemodify(cmdlineBeforeCursor, ':r')
+    let l:cmdlineRoot = fnamemodify(l:cmdlineBeforeCursor, ':r')
     let l:result = (l:cmdlineBeforeCursor ==# l:cmdlineRoot ? substitute(l:cmdlineBeforeCursor, '\%(\\ \|[\\/]\@!\f\)\+[\\/]\=$\|.$', '', '') : l:cmdlineRoot)
     call setcmdpos(strlen(l:result) + 1)
     return l:result . l:cmdlineAfterCursor
