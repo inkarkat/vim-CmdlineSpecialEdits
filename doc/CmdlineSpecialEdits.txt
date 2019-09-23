@@ -124,9 +124,15 @@ CTRL-R CTRL-L		Insert the current line (without leading indent and
 CTRL-R CTRL-G		Insert the current selected text.
 							     *c_CTRL-R_CTRL-V*
 CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
-			Insert the contents of a register for literal search.
-			(Prepends |/\V| and escapes backslashes and the search
-			delimiter.)
+			Insert the contents of a register literally:
+			- as literal regular expression (either via \V or
+			  individually escaped characters, whatever is
+			  shorter) for searches
+			- as literal pattern / replacement in a |:substitute|
+			  command (depending on the position, also for custom
+			  ones if inside a /.../ argument)
+			- as literal expression for a |:put| command
+			- else as literal Vimscript String
 									  *:#*
 :#			Alias for :'[,'] (like :* is a synonym for :'<,'>)
 
