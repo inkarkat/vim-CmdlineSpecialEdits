@@ -9,6 +9,8 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	014	24-Sep-2019	Refactoring: Extract
+"				CmdlineSpecialEdits#SpecialRange#LastChange().
 "	013	08-Jul-2019	ENH: Add <C-g>/ mapping that converts
 "                               :substitute (or similar) pattern separators.
 "	012	05-Nov-2018	ENH: Add <C-g>+ mapping that converts between
@@ -148,7 +150,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)', 'c')
     cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
 endif
 
-cnoremap <expr> <Plug>(CmdlineSpecialLastChangeRange) (getcmdtype() == ':' && strpart(getcmdline(), 0, getcmdpos() - 1) =~# '\%(^\<Bar>\%(\%(^\<Bar>[^\\]\)\%(\\\\\)*\\\)\@<!<Bar>\)\s*$' ? "'[,']" : '#')
+cnoremap <expr> <Plug>(CmdlineSpecialLastChangeRange) CmdlineSpecialEdits#SpecialRange#LastChange()
 if ! hasmapto('<Plug>(CmdlineSpecialLastChangeRange)', 'c')
     cmap # <Plug>(CmdlineSpecialLastChangeRange)
 endif
