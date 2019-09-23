@@ -1,16 +1,15 @@
 " CmdlineSpecialEdits/Search.vim: Manipulate searches.
 "
 " DEPENDENCIES:
-"   - ingo/regexp.vim autoload script
-"   - ingo/regexp/comments.vim autoload script
-"   - ingo/str.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2017 Ingo Karkat
+" Copyright: (C) 2017-2019 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	003	24-Sep-2019	Integrate ** overload.
 "	002	03-Nov-2017	Add CmdlineSpecialEdits#Search#ToggleGrouping().
 "				Extend
 "				CmdlineSpecialEdits#Search#ToggleWholeWord() to
@@ -55,6 +54,11 @@ function! s:ToggleSearchModeExpression( modifierPattern, searchPattern )
 endfunction
 function! CmdlineSpecialEdits#Search#SpecialSearchMode( key )
     if stridx('/?', getcmdtype()) == -1
+	" Integrate with ** overload.
+	if getcmdtype() ==# ':' && a:key ==# '*'
+	    return CmdlineSpecialEdits#SpecialRange#LastSelection()
+	endif
+
 	return a:key
     endif
 
