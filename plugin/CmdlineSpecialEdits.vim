@@ -143,7 +143,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialInsertChar)', 'c')
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
 endif
 
-cnoremap <silent> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch) <C-r><C-r>='\V' . escape(getreg(ingo#query#get#Register('\')), '\'.matchstr(getcmdtype(), '[/?]'))<CR>
+cnoremap <silent> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch) <C-\>e(CmdlineSpecialEdits#Literal#Register())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)', 'c')
     cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
 endif
