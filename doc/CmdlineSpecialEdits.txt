@@ -133,8 +133,20 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			  ones if inside a /.../ argument)
 			- as literal expression for a |:put| command
 			- else as literal Vimscript String
-									  *:#*
+								    *:#* *:##*
 :#			Alias for :'[,'] (like :* is a synonym for :'<,'>)
+:##			Replace with a range the same size as the last changed
+			area. This makes it easy to reapply an Ex command to a
+			same-sized range elsewhere. The created range is
+			relative to the current line, so it can be quickly
+			reapplied at further locations via |@:|.
+								   *:starstar*
+:**			Replace with a range the same size as the last
+			selected area. This makes it easy to reapply a
+			selection to an Ex command, like |1v| does in normal
+			mode. The created range is relative to the current
+			line, so it can be quickly reapplied at further
+			locations via |@:|.
 
 
 				      *CmdlineSpecialEdits-SpecialSearchModes*
