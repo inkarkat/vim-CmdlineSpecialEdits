@@ -11,6 +11,10 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS
+"	002	03-Nov-2017	Add CmdlineSpecialEdits#Search#ToggleGrouping().
+"				Extend
+"				CmdlineSpecialEdits#Search#ToggleWholeWord() to
+"				also account for capture groups in pattern.
 "	001	24-Jul-2017	file creation from ingomappings.vim
 
 function! CmdlineSpecialEdits#Search#SwitchSearchMode()
@@ -102,7 +106,22 @@ function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
     let l:strippedSearchPattern = substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[<>]', '', 'g')
     if a:searchPattern ==# l:strippedSearchPattern
 	let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
-	return l:prefixAtoms . ingo#regexp#MakeWholeWordSearch(l:searchPattern)
+	let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
+	return l:prefixAtoms . ingo#regexp#MakeWholeWordSearch(l:groupedSearchPattern, l:searchPattern)
+    else
+	return l:strippedSearchPattern
+    endif
+endfunction
+function! CmdlineSpecialEdits#Search#ToggleGrouping( mode, searchPattern )
+    if empty(a:searchPattern) && a:mode ==# 'c'
+	call setcmdpos(3)
+	return '\(\)'
+    endif
+
+    let l:strippedSearchPattern = substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[()]', '', 'g')
+    if a:searchPattern ==# l:strippedSearchPattern
+	let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
+	return l:prefixAtoms . '\(' . l:searchPattern . '\)'
     else
 	return l:strippedSearchPattern
     endif
