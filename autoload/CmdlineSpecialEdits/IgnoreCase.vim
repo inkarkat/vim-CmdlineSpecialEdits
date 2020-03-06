@@ -46,11 +46,13 @@ function! s:PartialIgnoreCase( pattern )
 	return a:pattern
     endif
 
-    call map(l:caseInsensitiveOrdinaryAtoms, 's:MakeCaseInsensitive(v:val)')
+    let l:transformedCaseInsensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
+    \   map(copy(l:caseInsensitiveOrdinaryAtoms), 's:MakeCaseInsensitive(v:val)'),
+    \   l:caseSensitiveOrdinaryAtoms
+    \)
 
-    let l:transformedOrdinaryAtoms = ingo#list#merge#Distinct(l:caseInsensitiveOrdinaryAtoms, l:caseSensitiveOrdinaryAtoms)
-
-    return (&ignorecase ? '\C' : '') . join(ingo#list#Join(l:transformedOrdinaryAtoms, l:atomsMultisAndSoOn), '')
+    let l:transformedCaseInsensitivePattern = (&ignorecase ? '\C' : '') . join(ingo#list#Join(l:transformedCaseInsensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
+    return l:transformedCaseInsensitivePattern
 endfunction
 function! s:MakeCaseInsensitive( pattern ) abort
     return substitute(a:pattern, '\a', '[\l&\u&]', 'g')
