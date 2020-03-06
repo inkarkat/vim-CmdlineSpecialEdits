@@ -119,11 +119,14 @@ CTRL-G s		Simplify regexp branches of the search pattern by
 CTRL-G c		Convert alphabetic characters following \c (up to the
 			end or the next \C) into case-insensitive [xX]
 			collections, or the opposite characters into
-			\%(\l\&x\) / \%(\u\&X\), and drop the \c\C atoms, so
-			that the entire regular expression becomes a mixed
-			case sensitive / insensitive pattern. (This cannot be
+			\%(\l\&x\) / \%(\u\&X\) (whichever resulting pattern
+			is shorter), and drop the \c\C atoms, so that the
+			entire regular expression becomes a mixed case
+			sensitive / insensitive pattern. (This cannot be
 			achieved by the built-in |/\c| / |/\C|, as they apply
 			to the whole pattern.)
+			When executed again on the result: Replace with the
+			alternative approach.
 								  *c_CTRL-G_y*
 CTRL-G y		Yank the current command-line (to the default
 			register).

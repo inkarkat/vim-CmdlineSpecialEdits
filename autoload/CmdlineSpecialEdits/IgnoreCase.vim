@@ -11,13 +11,21 @@
 function! s:CaseAtomExpr( ... ) abort
     return '^.*\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\' . (a:0 >= 2 ? a:1 . (empty(a:2) ? '[cC]' : '') : (a:0 ? a:1 : '[cC]'))
 endfunction
+
+let s:transformedCaseInsensitivePattern = ''
+let s:transformedCaseSensitivePattern = ''
 function! CmdlineSpecialEdits#IgnoreCase#Mixed() abort
     let [l:cmdlineBeforePattern, l:searchPattern, l:cmdlineAfterPattern] = CmdlineSpecialEdits#ParseCurrentOrPreviousPattern('/')
-    if l:searchPattern !~# s:CaseAtomExpr('c')
-	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
-    endif
 
-    return l:cmdlineBeforePattern . s:PartialIgnoreCase(l:searchPattern) . l:cmdlineAfterPattern
+    if l:searchPattern ==# s:transformedCaseInsensitivePattern
+	return s:transformedCaseSensitivePattern
+    elseif l:searchPattern ==# s:transformedCaseSensitivePattern
+	return s:transformedCaseInsensitivePattern
+    elseif l:searchPattern !~# s:CaseAtomExpr('c')
+	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
+    else
+	return l:cmdlineBeforePattern . s:PartialIgnoreCase(l:searchPattern) . l:cmdlineAfterPattern
+    endif
 endfunction
 
 function! s:PartialIgnoreCase( pattern )
@@ -26,11 +34,11 @@ function! s:PartialIgnoreCase( pattern )
 	return a:pattern
     endif
 
-    let l:transformedCaseInsensitivePattern = s:TransformToCaseInsensitivePattern(l:result)
-    let l:transformedCaseSensitivePattern = s:TransformToCaseSensitivePattern(l:result)
-    return (ingo#collections#CharacterCountAscSort(l:transformedCaseInsensitivePattern, l:transformedCaseSensitivePattern) == 1 ?
-    \   l:transformedCaseSensitivePattern :
-    \   l:transformedCaseInsensitivePattern
+    let s:transformedCaseInsensitivePattern = s:TransformToCaseInsensitivePattern(l:result)
+    let s:transformedCaseSensitivePattern = s:TransformToCaseSensitivePattern(l:result)
+    return (ingo#collections#CharacterCountAscSort(s:transformedCaseInsensitivePattern, s:transformedCaseSensitivePattern) == 1 ?
+    \   s:transformedCaseSensitivePattern :
+    \   s:transformedCaseInsensitivePattern
     \)
 endfunction
 function! s:Separate( pattern )
