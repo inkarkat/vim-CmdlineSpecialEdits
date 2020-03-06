@@ -31,6 +31,8 @@ SOURCE									     *
     http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406
 - CTRL-G + inspired by
     https://stackoverflow.com/questions/53124198/select-relative-range-ignoring-invalid-line-numbers/53154241
+- CTRL-G c inspired by
+    https://stackoverflow.com/questions/60194038/ignore-the-case-in-part-of-the-search-pattern-in-vim
 
 ==============================================================================
 USAGE						   *CmdlineSpecialEdits-usage*
@@ -113,6 +115,15 @@ CTRL-G A		Group any existing regexp branches and position the
 CTRL-G s		Simplify regexp branches of the search pattern by
 			extracting common substrings. For example:
 			/myFoobar\|theFoony -> /\%(my\|the\)Foo\%(bar\|ny\) ~
+								  *c_CTRL-G_c*
+CTRL-G c		Convert alphabetic characters following \c (up to the
+			end or the next \C) into case-insensitive [xX]
+			collections, or the opposite characters into
+			\%(\l\&x\) / \%(\u\&X\), and drop the \c\C atoms, so
+			that the entire regular expression becomes a mixed
+			case sensitive / insensitive pattern. (This cannot be
+			achieved by the built-in |/\c| / |/\C|, as they apply
+			to the whole pattern.)
 								  *c_CTRL-G_y*
 CTRL-G y		Yank the current command-line (to the default
 			register).
