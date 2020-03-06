@@ -1,3 +1,14 @@
 autoload/CmdlineSpecialEdits.vim
+autoload/CmdlineSpecialEdits/Edit.vim
+autoload/CmdlineSpecialEdits/IgnoreCase.vim
+autoload/CmdlineSpecialEdits/Literal.vim
+autoload/CmdlineSpecialEdits/Range.vim
+autoload/CmdlineSpecialEdits/Recall.vim
+autoload/CmdlineSpecialEdits/Remove.vim
+autoload/CmdlineSpecialEdits/Search.vim
+autoload/CmdlineSpecialEdits/Simplify.vim
+autoload/CmdlineSpecialEdits/SmartCase.vim
+autoload/CmdlineSpecialEdits/SpecialRange.vim
+autoload/CmdlineSpecialEdits/Substitute.vim
 plugin/CmdlineSpecialEdits.vim
 doc/CmdlineSpecialEdits.txt
