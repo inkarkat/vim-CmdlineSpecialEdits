@@ -8,9 +8,12 @@
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 
+function! s:CaseAtomExpr( ... ) abort
+    return '^.*\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\' . (a:0 >= 2 ? a:1 . (empty(a:2) ? '[cC]' : '') : (a:0 ? a:1 : '[cC]'))
+endfunction
 function! CmdlineSpecialEdits#IgnoreCase#Mixed() abort
     let [l:cmdlineBeforePattern, l:searchPattern, l:cmdlineAfterPattern] = CmdlineSpecialEdits#ParseCurrentOrPreviousPattern('/')
-    if l:searchPattern !~# '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\c'
+    if l:searchPattern !~# s:CaseAtomExpr('c')
 	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
     endif
 
@@ -26,12 +29,12 @@ function! s:PartialIgnoreCase( pattern )
     let l:isSwitchedCase = 0
     for l:i in range(len(l:ordinaryAtoms))
 	if l:i >= 1
-	    let l:caseSigil = matchstr(get(l:atomsMultisAndSoOn, l:i - 1, ''), '^.*\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\\zs[cC]')
+	    let l:caseSigil = matchstr(get(l:atomsMultisAndSoOn, l:i - 1, ''), s:CaseAtomExpr('\zs', ''))
 	    if ! empty(l:caseSigil)
 		let l:isSwitchedCase = 1
 		let l:isCurrentCaseSensitive = (l:caseSigil ==# 'C')
 
-		let l:atomsMultisAndSoOn[l:i - 1] = substitute(l:atomsMultisAndSoOn[l:i - 1], '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[cC]', '', 'g')
+		let l:atomsMultisAndSoOn[l:i - 1] = substitute(l:atomsMultisAndSoOn[l:i - 1], s:CaseAtomExpr(), '', 'g')
 	    endif
 	endif
 
