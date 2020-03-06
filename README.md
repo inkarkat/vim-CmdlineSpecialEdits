@@ -14,6 +14,7 @@ This plugin ...
 - [CTRL-G D inspiration](https://unix.stackexchange.com/questions/408980/delete-to-end-of-command-line-in-vim)
 - [CTRL-G CTRL-U inspiration](http://stackoverflow.com/questions/11011304/reusing-the-previous-range-in-ex-commands-in-vim/11013406)
 - [CTRL-G + inspiration](https://stackoverflow.com/questions/53124198/select-relative-range-ignoring-invalid-line-numbers/53154241)
+- [CTRL-G c inspiration](https://stackoverflow.com/questions/60194038/ignore-the-case-in-part-of-the-search-pattern-in-vim)
 
 USAGE
 ------------------------------------------------------------------------------
@@ -95,6 +96,18 @@ USAGE
     CTRL-G s                Simplify regexp branches of the search pattern by
                             extracting common substrings. For example:
                             /myFoobar\|theFoony -> /\%(my\|the\)Foo\%(bar\|ny\)
+
+    CTRL-G c                Convert alphabetic characters following \c (up to the
+                            end or the next \C) into case-insensitive [xX]
+                            collections, or the opposite characters into
+                            \%(\l\&x\) / \%(\u\&X\) (whichever resulting pattern
+                            is shorter), and drop the \c\C atoms, so that the
+                            entire regular expression becomes a mixed case
+                            sensitive / insensitive pattern. (This cannot be
+                            achieved by the built-in /\c / /\C, as they apply
+                            to the whole pattern.)
+                            When executed again on the result: Replace with the
+                            alternative approach.
 
     CTRL-G y                Yank the current command-line (to the default
                             register).
@@ -215,12 +228,16 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-c> <Plug>(CmdlineSpecialRemoveCommandName)
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
+    cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
+    cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
     cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
     cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
     cmap <C-BS> <Plug>(CmdlineSpecialRemoveLastPathComponent)
     cmap <C-g>I <Plug>(CmdlineSpecialAddPrefix)
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
+    cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
+    cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
     cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)

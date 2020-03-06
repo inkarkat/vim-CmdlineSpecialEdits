@@ -256,6 +256,7 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>I <Plug>(CmdlineSpecialAddPrefix)
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
+    cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
     cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
