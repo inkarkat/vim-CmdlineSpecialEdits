@@ -21,6 +21,19 @@ function! CmdlineSpecialEdits#IgnoreCase#Mixed() abort
 endfunction
 
 function! s:PartialIgnoreCase( pattern )
+    let l:result = s:Separate(a:pattern)
+    if empty(l:result)
+	return a:pattern
+    endif
+
+    let l:transformedCaseInsensitivePattern = s:TransformToCaseInsensitivePattern(l:result)
+    let l:transformedCaseSensitivePattern = s:TransformToCaseSensitivePattern(l:result)
+    return (ingo#collections#CharacterCountAscSort(l:transformedCaseInsensitivePattern, l:transformedCaseSensitivePattern) == 1 ?
+    \   l:transformedCaseSensitivePattern :
+    \   l:transformedCaseInsensitivePattern
+    \)
+endfunction
+function! s:Separate( pattern )
     let [l:ordinaryAtoms, l:atomsMultisAndSoOn] =
     \   ingo#collections#SeparateItemsAndSeparators(ingo#regexp#magic#Normalize(a:pattern), ingo#regexp#parse#NonOrdinaryAtomExpr(), 1)
 
@@ -43,32 +56,37 @@ function! s:PartialIgnoreCase( pattern )
 	call add(l:caseInsensitiveOrdinaryAtoms, l:isCurrentCaseSensitive ? '' : l:ordinaryAtoms[l:i])
     endfor
 
-    if ! l:isSwitchedCase
-	return a:pattern
-    endif
-
-    let l:transformedCaseInsensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
-    \   map(copy(l:caseInsensitiveOrdinaryAtoms), 's:MakeCaseInsensitive(v:val)'),
-    \   l:caseSensitiveOrdinaryAtoms
-    \)
-    let l:transformedCaseInsensitivePattern = (&ignorecase ? '\C' : '') .
-    \   join(ingo#list#Join(l:transformedCaseInsensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
-
-    let l:transformedCaseSensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
-    \   l:caseInsensitiveOrdinaryAtoms,
-    \   map(copy(l:caseSensitiveOrdinaryAtoms), 's:MakeCaseSensitive(v:val)')
-    \)
-    let l:transformedCaseSensitivePattern = (&ignorecase ? '' : '\c') .
-    \   join(ingo#list#Join(l:transformedCaseSensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
-
-    return (ingo#collections#CharacterCountAscSort(l:transformedCaseInsensitivePattern, l:transformedCaseSensitivePattern) == 1 ?
-    \   l:transformedCaseSensitivePattern :
-    \   l:transformedCaseInsensitivePattern
+    return (l:isSwitchedCase ?
+    \   {
+    \       'caseInsensitiveOrdinaryAtoms': l:caseInsensitiveOrdinaryAtoms,
+    \       'caseSensitiveOrdinaryAtoms': l:caseSensitiveOrdinaryAtoms,
+    \       'atomsMultisAndSoOn': l:atomsMultisAndSoOn
+    \   } :
+    \   []
     \)
 endfunction
+
+function! s:TransformToCaseInsensitivePattern( o ) abort
+    let l:transformedCaseInsensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
+    \   map(copy(a:o.caseInsensitiveOrdinaryAtoms), 's:MakeCaseInsensitive(v:val)'),
+    \   a:o.caseSensitiveOrdinaryAtoms
+    \)
+    return (&ignorecase ? '\C' : '') .
+    \   join(ingo#list#Join(l:transformedCaseInsensitiveOrdinaryAtoms, a:o.atomsMultisAndSoOn), '')
+endfunction
+function! s:TransformToCaseSensitivePattern( o ) abort
+    let l:transformedCaseSensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
+    \   a:o.caseInsensitiveOrdinaryAtoms,
+    \   map(copy(a:o.caseSensitiveOrdinaryAtoms), 's:MakeCaseSensitive(v:val)')
+    \)
+    return (&ignorecase ? '' : '\c') .
+    \   join(ingo#list#Join(l:transformedCaseSensitiveOrdinaryAtoms, a:o.atomsMultisAndSoOn), '')
+endfunction
+
 function! s:MakeCaseInsensitive( pattern ) abort
     return substitute(a:pattern, '\a', '[\l&\u&]', 'g')
 endfunction
+
 function! s:MakeCaseSensitive( text ) abort
     let [l:other, l:runs] = ingo#collections#SeparateItemsAndSeparators(a:text, '\u\%(\L*\u\)\?\|\l\%(\U*\l\)\?', 1)
 
