@@ -50,12 +50,41 @@ function! s:PartialIgnoreCase( pattern )
     \   map(copy(l:caseInsensitiveOrdinaryAtoms), 's:MakeCaseInsensitive(v:val)'),
     \   l:caseSensitiveOrdinaryAtoms
     \)
+    let l:transformedCaseInsensitivePattern = (&ignorecase ? '\C' : '') .
+    \   join(ingo#list#Join(l:transformedCaseInsensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
 
-    let l:transformedCaseInsensitivePattern = (&ignorecase ? '\C' : '') . join(ingo#list#Join(l:transformedCaseInsensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
-    return l:transformedCaseInsensitivePattern
+    let l:transformedCaseSensitiveOrdinaryAtoms = ingo#list#merge#Distinct(
+    \   l:caseInsensitiveOrdinaryAtoms,
+    \   map(copy(l:caseSensitiveOrdinaryAtoms), 's:MakeCaseSensitive(v:val)')
+    \)
+    let l:transformedCaseSensitivePattern = (&ignorecase ? '' : '\c') .
+    \   join(ingo#list#Join(l:transformedCaseSensitiveOrdinaryAtoms, l:atomsMultisAndSoOn), '')
+
+    return (ingo#collections#CharacterCountAscSort(l:transformedCaseInsensitivePattern, l:transformedCaseSensitivePattern) == 1 ?
+    \   l:transformedCaseSensitivePattern :
+    \   l:transformedCaseInsensitivePattern
+    \)
 endfunction
 function! s:MakeCaseInsensitive( pattern ) abort
     return substitute(a:pattern, '\a', '[\l&\u&]', 'g')
+endfunction
+function! s:MakeCaseSensitive( text ) abort
+    let [l:upperRuns, l:lowerRuns] = ingo#collections#SeparateItemsAndSeparators(a:text, '\u\%(\L*\u\)\?', 1)
+    call map(l:upperRuns, 's:AddCaseAssertion(v:val, "u")')
+    call map(l:lowerRuns, 's:AddCaseAssertion(v:val, "l")')
+    return join(ingo#list#Join(l:upperRuns, l:lowerRuns), '')
+endfunction
+function! s:AddCaseAssertion( text, case ) abort
+    let l:charCnt = ingo#compat#strchars(a:text)
+    let l:caseAtom = '\' . a:case
+
+    let l:runAssertion = printf('\%%(%s\{%d}\&%s\)', l:caseAtom, l:charCnt, a:text)
+    let l:individualAssertions = substitute(a:text, '\a', '\=printf("\\%%(%s\\&%s\\)", l:caseAtom, submatch(0))', 'g')
+
+    return (ingo#collections#CharacterCountAscSort(l:runAssertion, l:individualAssertions) == 1 ?
+    \   l:individualAssertions :
+    \   l:runAssertion
+    \)
 endfunction
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
