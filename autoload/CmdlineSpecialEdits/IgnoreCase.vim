@@ -21,7 +21,8 @@ function! CmdlineSpecialEdits#IgnoreCase#Mixed() abort
 endfunction
 
 function! s:PartialIgnoreCase( pattern )
-    let [l:ordinaryAtoms, l:atomsMultisAndSoOn] = ingo#collections#SeparateItemsAndSeparators(ingo#regexp#magic#Normalize(a:pattern), ingo#regexp#parse#NonOrdinaryAtomExpr(), 1)
+    let [l:ordinaryAtoms, l:atomsMultisAndSoOn] =
+    \   ingo#collections#SeparateItemsAndSeparators(ingo#regexp#magic#Normalize(a:pattern), ingo#regexp#parse#NonOrdinaryAtomExpr(), 1)
 
     let l:isCurrentCaseSensitive = ! &ignorecase
     let l:caseInsensitiveOrdinaryAtoms = []
@@ -69,10 +70,20 @@ function! s:MakeCaseInsensitive( pattern ) abort
     return substitute(a:pattern, '\a', '[\l&\u&]', 'g')
 endfunction
 function! s:MakeCaseSensitive( text ) abort
-    let [l:upperRuns, l:lowerRuns] = ingo#collections#SeparateItemsAndSeparators(a:text, '\u\%(\L*\u\)\?', 1)
+    let [l:other, l:runs] = ingo#collections#SeparateItemsAndSeparators(a:text, '\u\%(\L*\u\)\?\|\l\%(\U*\l\)\?', 1)
+
+    let l:upperRuns = map(copy(l:runs), 'v:val =~# "^\\u" ? v:val : ""')
+    let l:lowerRuns = map(copy(l:runs), 'v:val =~# "^\\l" ? v:val : ""')
+
     call map(l:upperRuns, 's:AddCaseAssertion(v:val, "u")')
     call map(l:lowerRuns, 's:AddCaseAssertion(v:val, "l")')
-    return join(ingo#list#Join(l:upperRuns, l:lowerRuns), '')
+
+    let l:transformedRuns = ingo#list#merge#Distinct(
+    \   l:upperRuns,
+    \   l:lowerRuns
+    \)
+
+    return join(ingo#list#Join(l:transformedRuns, l:other), '')
 endfunction
 function! s:AddCaseAssertion( text, case ) abort
     let l:charCnt = ingo#compat#strchars(a:text)
