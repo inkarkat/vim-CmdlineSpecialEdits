@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - Requires Vim 7.0 or higher.
 "
-" Copyright: (C) 2012-2019 Ingo Karkat
+" Copyright: (C) 2012-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -123,6 +123,11 @@ endif
 cnoremap <Plug>(CmdlineSpecialSimplifyBranches) <C-\>e(CmdlineSpecialEdits#Simplify#Branches())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialSimplifyBranches)', 'c')
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
+endif
+
+cnoremap <Plug>(CmdlineSpecialIgnoreCaseMixed) <C-\>e(CmdlineSpecialEdits#IgnoreCase#Mixed())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIgnoreCaseMixed)', 'c')
+    cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
 endif
 
 cnoremap <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
