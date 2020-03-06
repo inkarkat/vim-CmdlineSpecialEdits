@@ -24,6 +24,10 @@ function! CmdlineSpecialEdits#IgnoreCase#Mixed() abort
     elseif l:searchPattern !~# s:CaseAtomExpr('c')
 	return l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern
     else
+	" As the transformation cannot be undone, add the original command-line
+	" to the history, so that it can later be recalled.
+	call histadd(getcmdtype(), l:cmdlineBeforePattern . l:searchPattern . l:cmdlineAfterPattern)
+
 	return l:cmdlineBeforePattern . s:PartialIgnoreCase(l:searchPattern) . l:cmdlineAfterPattern
     endif
 endfunction
