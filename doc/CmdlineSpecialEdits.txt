@@ -316,7 +316,7 @@ below).
 ==============================================================================
 HISTORY						 *CmdlineSpecialEdits-history*
 
-GOAL
+1.00	10-Mar-2020
 First published version.
 
 0.01	13-Jun-2012
