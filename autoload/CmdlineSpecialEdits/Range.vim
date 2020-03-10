@@ -26,7 +26,7 @@ function! s:ChangeRange( Changer )
 endfunction
 
 function! CmdlineSpecialEdits#Range#ToggleSymbolic()
-    return s:ChangeRange(function(s:ToggleRange'))
+    return s:ChangeRange(function('s:ToggleRange'))
 endfunction
 function! s:ToggleRange( range )
     if a:range =~# '^\d\+\%(,\d*\)\?$'
