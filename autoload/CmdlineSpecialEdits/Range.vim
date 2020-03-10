@@ -119,7 +119,10 @@ function! s:ParseAddress( base, sigil, number )
     \)
 
     " Correct out-of-bounds line number.
-    return [min([line('$'), max([1, l:lnum])]), l:isRelative]
+    return [s:CorrectOutOfBounds(l:lnum), l:isRelative]
+endfunction
+function! s:CorrectOutOfBounds( lnum ) abort
+    return min([line('$'), max([1, a:lnum])])
 endfunction
 function! s:LnumToRelative( lnum )
     let l:offset = a:lnum - line('.')
