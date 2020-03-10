@@ -158,7 +158,8 @@ CTRL-G y		Yank the current command-line (to the default
 CTRL-R CTRL-S		Insert the (single) character under the cursor.
 CTRL-R CTRL-L		Insert the current line (without leading indent and
 			trailing spaces).
-CTRL-R CTRL-Y		Insert the current selected text.
+CTRL-R CTRL-Y		Insert the current selected text. Unlike the above
+			mappings, this inserts literally, not as if typed.
 							     *c_CTRL-R_CTRL-V*
 CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			Insert the contents of a register literally:
