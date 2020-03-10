@@ -32,8 +32,8 @@ function! s:ToggleRange( range )
     if a:range =~# '^\d\+\%(,\d*\)\?$'
 	return join(
 	\   map(
-	\       split(a:range, ','),
-	\       's:FindMark(v:val, 0)'
+	\       sort(split(a:range, ','), 'ingo#collections#numsort'),
+	\       's:FindMark(s:CorrectOutOfBounds(v:val), 0)'
 	\   ),
 	\   ','
 	\)

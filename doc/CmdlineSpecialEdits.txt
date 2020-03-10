@@ -82,7 +82,9 @@ CTRL-G D		Remove all characters between the cursor position and
 			direction. Like |D|, but in command-line mode.
 								  *c_CTRL-G_'*
 CTRL-G '		Change symbolic ranges like '<,'> to the actual line
-			numbers, and vice versa.
+			numbers, and vice versa. Also corrects addressing out
+			of bounds (<= 0 and larger than the last line number)
+			and backwards ranges.
 			Useful to be able to repeat a command on the same
 			range, even when the selection changes.
 			When used on an empty command line, recalls the
