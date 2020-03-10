@@ -58,8 +58,7 @@ SOURCE									     *
 USAGE						   *CmdlineSpecialEdits-usage*
 							     *c_CTRL-G_CTRL-U*
 CTRL-G CTRL-U		Remove all characters between the cursor position and
-			the closest previous |:range| given to a command. When
-			directly after a range, remove it.
+			the closest previous |:range| given to a command.
 			Useful to repeat a recalled command line with the same
 			range, but a different command.
 			When used on an empty command line, recalls the
