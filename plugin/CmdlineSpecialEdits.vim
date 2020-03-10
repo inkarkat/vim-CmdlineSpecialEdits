@@ -137,7 +137,7 @@ endif
 
 cnoremap <Plug>(CmdlineSpecialInsertSelection) <C-r><C-r>=tr(ingo#selection#Get(), "\n", "\r")<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialInsertSelection)', 'c')
-    cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
+    cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
 endif
 
 cnoremap <expr> <Plug>(CmdlineSpecialInsertLine) ingo#str#Trim(getline('.'))

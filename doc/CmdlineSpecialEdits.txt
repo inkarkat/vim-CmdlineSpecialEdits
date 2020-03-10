@@ -131,11 +131,11 @@ CTRL-G c		Convert alphabetic characters following \c (up to the
 CTRL-G y		Yank the current command-line (to the default
 			register).
 
-			 *c_CTRL-R_CTRL-G* *c_CTRL-R_CTRL-L* *c_CTRL-R_CTRL-S*
-CTRL-R CTRL-S		Insert the character under the cursor.
+			 *c_CTRL-R_CTRL-L* *c_CTRL-R_CTRL-S* *c_CTRL-R_CTRL-Y*
+CTRL-R CTRL-S		Insert the (single) character under the cursor.
 CTRL-R CTRL-L		Insert the current line (without leading indent and
 			trailing spaces).
-CTRL-R CTRL-G		Insert the current selected text.
+CTRL-R CTRL-Y		Insert the current selected text.
 							     *c_CTRL-R_CTRL-V*
 CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			Insert the contents of a register literally:
@@ -264,9 +264,9 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
-    cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
+    cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
     cmap # <Plug>(CmdlineSpecialLastChangeRange)
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
