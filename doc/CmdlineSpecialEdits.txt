@@ -6,7 +6,6 @@ description			|CmdlineSpecialEdits-description|
 usage				|CmdlineSpecialEdits-usage|
 installation			|CmdlineSpecialEdits-installation|
 configuration			|CmdlineSpecialEdits-configuration|
-integration			|CmdlineSpecialEdits-integration|
 limitations			|CmdlineSpecialEdits-limitations|
 known problems			|CmdlineSpecialEdits-known-problems|
 todo				|CmdlineSpecialEdits-todo|
@@ -15,9 +14,30 @@ history				|CmdlineSpecialEdits-history|
 ==============================================================================
 DESCRIPTION				     *CmdlineSpecialEdits-description*
 
-This plugin ...
+You frequently go to Vim's |Command-line-mode| - especially for searches and
+Ex commands. Within that single line, editing is limited; you're supposed to
+use (or switch to) the |command-line-window|, which offers the full editing
+power. However, many people mostly stick to the simple command-line, making
+edits slower than necessary.
 
-HOW IT WORKS								     *
+This plugin tries to bridge the gap between the simple command-line and the
+command-line window by offering a large set of mappings for the command-line
+that are tailored to custom editing tasks, and therefore may be even more
+powerful than the full generic set of Vim commands in the command-line window.
+
+Invocation and recall of Ex commands is aided by mappings that keep a previous
+range, command, or arguments, adapting ranges to line numbers or relative
+addressing, changing separators for |:substitute| et al, and many more.
+The ubiquitous searches and substitutions are supercharged by mappings that
+group and simplify regexp branches, insert register contents as literal
+searches or replacements, and more.
+
+Normal mode mappings allow to quickly start common searches like literal,
+case-insensitive, or whitespace-ignoring, and can also toggle the mode when
+inside the search command-line.
+
+Finally, built-in CTRL-R insertions (like |c_CTRL-R_CTRL-F|) are extended with
+additional targets for the current character, line, or selected text.
 
 SOURCE									     *
 
@@ -274,9 +294,6 @@ If you want to use different mappings, map your keys to the
     nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
     cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 <
-==============================================================================
-INTEGRATION				     *CmdlineSpecialEdits-integration*
-
 ==============================================================================
 LIMITATIONS				     *CmdlineSpecialEdits-limitations*
 

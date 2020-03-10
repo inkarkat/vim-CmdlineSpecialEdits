@@ -5,7 +5,30 @@ _by Ingo Karkat_
 DESCRIPTION
 ------------------------------------------------------------------------------
 
-This plugin ...
+You frequently go to Vim's Command-line-mode - especially for searches and
+Ex commands. Within that single line, editing is limited; you're supposed to
+use (or switch to) the command-line-window, which offers the full editing
+power. However, many people mostly stick to the simple command-line, making
+edits slower than necessary.
+
+This plugin tries to bridge the gap between the simple command-line and the
+command-line window by offering a large set of mappings for the command-line
+that are tailored to custom editing tasks, and therefore may be even more
+powerful than the full generic set of Vim commands in the command-line window.
+
+Invocation and recall of Ex commands is aided by mappings that keep a previous
+range, command, or arguments, adapting ranges to line numbers or relative
+addressing, changing separators for :substitute et al, and many more.
+The ubiquitous searches and substitutions are supercharged by mappings that
+group and simplify regexp branches, insert register contents as literal
+searches or replacements, and more.
+
+Normal mode mappings allow to quickly start common searches like literal,
+case-insensitive, or whitespace-ignoring, and can also toggle the mode when
+inside the search command-line.
+
+Finally, built-in CTRL-R insertions (like c\_CTRL-R\_CTRL-F) are extended with
+additional targets for the current character, line, or selected text.
 
 ### SOURCE
 
@@ -83,7 +106,7 @@ USAGE
                             macro inline via q"{reg}) by removing them and the
                             previously pressed key.
 
-    CTRL-BS                 Remove last path component / file extension.
+    CTRL-<BS>               Remove last path component / file extension.
 
     CTRL-G I                Group any existing regexp branches and position the
                             cursor at the beginning (but behind a /^ anchor).
@@ -102,20 +125,20 @@ USAGE
                             collections, or the opposite characters into
                             \%(\l\&x\) / \%(\u\&X\) (whichever resulting pattern
                             is shorter), and drop the \c\C atoms, so that the
-                            entire regular expression becomes a mixed case
-                            sensitive / insensitive pattern. (This cannot be
-                            achieved by the built-in /\c / /\C, as they apply
-                            to the whole pattern.)
+                            entire regular expression becomes a partially case-
+                            sensitive / partially case-insensitive pattern. (This
+                            cannot be achieved by the built-in /\c / /\C, as
+                            they apply to the whole pattern.)
                             When executed again on the result: Replace with the
                             alternative approach.
 
     CTRL-G y                Yank the current command-line (to the default
                             register).
 
-    CTRL-R CTRL-S           Insert the character under the cursor.
+    CTRL-R CTRL-S           Insert the (single) character under the cursor.
     CTRL-R CTRL-L           Insert the current line (without leading indent and
                             trailing spaces).
-    CTRL-R CTRL-G           Insert the current selected text.
+    CTRL-R CTRL-Y           Insert the current selected text.
 
     CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
                             Insert the contents of a register literally:
@@ -155,6 +178,7 @@ USAGE
                             and comment prefixes, and also allowing direct
                             concatenation of lines (i.e. without any whitespace in
                             between).
+
     ///, ???                Use the last search pattern and toggle from literal to
                             normal search and vice versa.
     //?, ??/                Use the last search pattern and toggle from
@@ -192,8 +216,11 @@ To uninstall, use the :RmVimball command.
 ### DEPENDENCIES
 
 - Requires Vim 7.0 or higher.
-- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.037 or
+- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.041 or
   higher.
+- SmartCase.vim plugin ([vimscript #1359](http://www.vim.org/scripts/script.php?script_id=1359), or my fork at
+  https://github.com/inkarkat/vim-SmartCase) (optional, only for
+  c\_CTRL-G\_CTRL-S).
 
 CONFIGURATION
 ------------------------------------------------------------------------------
@@ -239,9 +266,9 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
     cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
-    cmap <C-r><C-g> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
+    cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
     cmap <C-r><C-v> <Plug>(CmdlineSpecialInsertRegisterForLiteralSearch)
     cmap # <Plug>(CmdlineSpecialLastChangeRange)
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
