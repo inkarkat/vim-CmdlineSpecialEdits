@@ -1,19 +1,12 @@
 " CmdlineSpecialEdits/Recall.vim: Recall command-line from history.
 "
 " DEPENDENCIES:
-"   - CmdlineSpecialEdits.vim autoload script
-"   - ingo/cmdargs/range.vim autoload script
-"   - ingo/cmdargs/substitute.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014 Ingo Karkat
+" Copyright: (C) 2014-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	002	20-Jun-2014	FIX: Avoid endless loop on invalid command. Move
-"				counter increase to the beginning of the loop.
-"	001	20-Jun-2014	file creation
 
 function! s:RecallHistoryWithoutRange( type, prefix, historyStartCnt )
     let l:cnt = a:historyStartCnt - 1

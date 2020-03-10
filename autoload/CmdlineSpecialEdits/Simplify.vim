@@ -1,31 +1,12 @@
 " CmdlineSpecialEdits/Simplify.vim: Simplify command-line.
 "
 " DEPENDENCIES:
-"   - CmdlineSpecialEdits.vim autoload script
-"   - ingo/collections.vim autoload script
-"   - ingo/collections/find.vim autoload script
-"   - ingo/compat.vim autoload script
-"   - ingo/list/lcs.vim autoload script
-"   - ingo/regexp/collection.vim autoload script
-"   - ingo/regexp/split.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2017-2018 Ingo Karkat
+" Copyright: (C) 2017-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	005	24-Jun-2018	Use ingo#regexp#split#TopLevelBranches().
-"	004	21-Nov-2017	ENH: Use new
-"				CmdlineSpecialEdits#ParseCurrentOrPreviousPattern()
-"				to also handle patterns within Ex commands.
-"	003	31-Oct-2017	DWIM: Always recall from search history, not
-"				command-line history.
-"	002	29-Jul-2017	Fix problems in algorithm.
-"				Get alternatives for 1..3 common length, and
-"				choose the shortest one; prefering longer common
-"				length among equals.
-"	001	24-Jul-2017	file creation
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -39,8 +20,8 @@ function! CmdlineSpecialEdits#Simplify#Branches()
     " Try minimum common lengths of 1..3, with minimum distinct lengths of
     " either 1 or 0.
     let l:commonLengthAlternatives =
-    \   map(range(1, 3), "ingo#list#lcs#FindAllCommon(l:branches, v:val, 1)") +
-    \   map(range(1, 3), "ingo#list#lcs#FindAllCommon(l:branches, v:val, 0)")
+    \   map(range(1, 3), 'ingo#list#lcs#FindAllCommon(l:branches, v:val, 1)') +
+    \   map(range(1, 3), 'ingo#list#lcs#FindAllCommon(l:branches, v:val, 0)')
 
     " Remove those alternatives that have no common substrings; there would be
     " no change to the original.

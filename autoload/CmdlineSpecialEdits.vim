@@ -1,32 +1,12 @@
 " CmdlineSpecialEdits.vim: Useful replacements of parts of the cmdline.
 "
 " DEPENDENCIES:
-"   - ingo/cmdargs/command.vim autoload script
-"   - ingo/cmdargs/pattern.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2012-2019 Ingo Karkat
+" Copyright: (C) 2012-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	007	21-Nov-2017	Add
-"				CmdlineSpecialEdits#ParseCurrentOrPreviousPattern()
-"				variant for pattern extraction, also from a
-"				(:substitute et al.) Ex command-line.
-"	006	31-Oct-2017	Allow overriding cmdtype used for history
-"				recall.
-"	005	30-Mar-2015	Use current command-line type instead of
-"				always Ex command history.
-"	004	20-Jun-2014	Add toggling between :substitute and :SmartCase
-"				variants, and the corresponding search patterns.
-"	003	08-Jul-2013	Move ingoexcommands.vim into ingo-library.
-"	002	31-May-2013	Move the parsing of the command range back to
-"				ingoexcommands.vim where we originally took the
-"				pattern from.
-"				Add recall of history commands regardless of the
-"				range.
-"	001	19-Jun-2012	file creation
 
 function! CmdlineSpecialEdits#GetCurrentCmdline() abort
     return [strpart(getcmdline(), 0, getcmdpos() - 1), strpart(getcmdline(), getcmdpos() - 1)]

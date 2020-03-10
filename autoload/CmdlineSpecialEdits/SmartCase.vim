@@ -1,17 +1,12 @@
 " CmdlineSpecialEdits/SmartCase.vim: Toggle normal / SmartCase.
 "
 " DEPENDENCIES:
-"   - CmdlineSpecialEdits.vim autoload script
-"   - ingo/cmdargs/range.vim autoload script
-"   - ingo/smartcase.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014 Ingo Karkat
+" Copyright: (C) 2014-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	001	20-Jun-2014	file creation
 
 function! CmdlineSpecialEdits#SmartCase#ToggleCommand()
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentOrPreviousCmdline()
