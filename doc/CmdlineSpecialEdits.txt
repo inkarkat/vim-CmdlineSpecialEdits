@@ -94,6 +94,8 @@ CTRL-G +		Change relative ranges like .-5,.+5 to absolute line
 			numbers and vice versa. Also corrects addressing out
 			of bounds (<= 0 and larger than the last line number)
 			and backwards ranges.
+			When used on an empty command line, recalls the
+			previous command-line from history first.
 							     *c_CTRL-G_CTRL-O*
 CTRL-G CTRL-O		Recall older command-line from history, whose
 			beginning matches the current command-line, regardless
