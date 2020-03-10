@@ -43,8 +43,7 @@ USAGE
 ------------------------------------------------------------------------------
 
     CTRL-G CTRL-U           Remove all characters between the cursor position and
-                            the closest previous :range given to a command. When
-                            directly after a range, remove it.
+                            the closest previous :range given to a command.
                             Useful to repeat a recalled command line with the same
                             range, but a different command.
                             When used on an empty command line, recalls the
@@ -68,7 +67,9 @@ USAGE
                             direction. Like D, but in command-line mode.
 
     CTRL-G '                Change symbolic ranges like '<,'> to the actual line
-                            numbers, and vice versa.
+                            numbers, and vice versa. Also corrects addressing out
+                            of bounds (<= 0 and larger than the last line number)
+                            and backwards ranges.
                             Useful to be able to repeat a command on the same
                             range, even when the selection changes.
                             When used on an empty command line, recalls the
@@ -78,6 +79,8 @@ USAGE
                             numbers and vice versa. Also corrects addressing out
                             of bounds (<= 0 and larger than the last line number)
                             and backwards ranges.
+                            When used on an empty command line, recalls the
+                            previous command-line from history first.
 
     CTRL-G CTRL-O           Recall older command-line from history, whose
                             beginning matches the current command-line, regardless
@@ -138,7 +141,8 @@ USAGE
     CTRL-R CTRL-S           Insert the (single) character under the cursor.
     CTRL-R CTRL-L           Insert the current line (without leading indent and
                             trailing spaces).
-    CTRL-R CTRL-Y           Insert the current selected text.
+    CTRL-R CTRL-Y           Insert the current selected text. Unlike the above
+                            mappings, this inserts literally, not as if typed.
 
     CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
                             Insert the contents of a register literally:
@@ -286,8 +290,8 @@ below).
 HISTORY
 ------------------------------------------------------------------------------
 
-##### GOAL
-First published version.
+##### 1.00    10-Mar-2020
+- First published version.
 
 ##### 0.01    13-Jun-2012
 - Started development.
