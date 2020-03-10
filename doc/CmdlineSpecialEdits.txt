@@ -101,7 +101,7 @@ CTRL-G CTRL-H		Apply literal <BS> and <C-h> keys (e.g. when editing a
 			macro inline via q"{reg}) by removing them and the
 			previously pressed key.
 								   *c_CTRL-BS*
-CTRL-BS			Remove last path component / file extension.
+CTRL-<BS>		Remove last path component / file extension.
 
 						     *c_CTRL-G_I* *c_CTRL-G_A*
 CTRL-G I		Group any existing regexp branches and position the
@@ -121,10 +121,10 @@ CTRL-G c		Convert alphabetic characters following \c (up to the
 			collections, or the opposite characters into
 			\%(\l\&x\) / \%(\u\&X\) (whichever resulting pattern
 			is shorter), and drop the \c\C atoms, so that the
-			entire regular expression becomes a mixed case
-			sensitive / insensitive pattern. (This cannot be
-			achieved by the built-in |/\c| / |/\C|, as they apply
-			to the whole pattern.)
+			entire regular expression becomes a partially case-
+			sensitive / partially case-insensitive pattern. (This
+			cannot be achieved by the built-in |/\c| / |/\C|, as
+			they apply to the whole pattern.)
 			When executed again on the result: Replace with the
 			alternative approach.
 								  *c_CTRL-G_y*
@@ -147,6 +147,8 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			  ones if inside a /.../ argument)
 			- as literal expression for a |:put| command
 			- else as literal Vimscript String
+
+					   *CmdlineSpecialEdits-range-aliases*
 								    *:#* *:##*
 :#			Alias for :'[,'] (like :* is a synonym for :'<,'>)
 :##			Replace with a range the same size as the last changed
@@ -164,7 +166,7 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 
 
 				      *CmdlineSpecialEdits-SpecialSearchModes*
-*//* *??* */?* *?/* */_* *?_* */star* *?star* *///* *???* *//?* *??/* *//_* *??_*
+				 *//* *??* */?* *?/* */_* *?_* */star* *?star*
 //, ??			Perform a literal search. (Only after a search
 			pattern, to keep the idiom of //e to repeat the search
 			but jump to the end.)
@@ -178,6 +180,7 @@ CTRL-R CTRL-V{0-9a-z"%#*+:.-=}
 			and comment prefixes, and also allowing direct
 			concatenation of lines (i.e. without any whitespace in
 			between).
+					   *///* *???* *//?* *??/* *//_* *??_*
 ///, ???		Use the last search pattern and toggle from literal to
 			normal search and vice versa.
 //?, ??/		Use the last search pattern and toggle from
@@ -214,8 +217,11 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.037 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.041 or
   higher.
+- |SmartCase.vim| plugin (vimscript #1359, or my fork at
+  https://github.com/inkarkat/vim-SmartCase) (optional, only for
+  |c_CTRL-G_CTRL-S|).
 
 ==============================================================================
 CONFIGURATION				   *CmdlineSpecialEdits-configuration*
