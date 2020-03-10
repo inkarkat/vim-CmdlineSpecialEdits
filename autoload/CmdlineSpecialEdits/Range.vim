@@ -1,27 +1,12 @@
 " CmdlineSpecialEdits/Range.vim: Toggle between symbolic and numbered ranges.
 "
 " DEPENDENCIES:
-"   - CmdlineSpecialEdits.vim autoload script
-"   - ingo/cmdargs/range.vim autoload script
-"   - ingo/range/lines.vim autoload script
+"   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014-2018 Ingo Karkat
+" Copyright: (C) 2014-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	004	05-Nov-2018	Refactoring: Split off s:ChangeRange() from
-"                               CmdlineSpecialEdits#Range#ToggleSymbolic().
-"                               ENH: Implement
-"                               CmdlineSpecialEdits#Range#ToggleRelative().
-"	003	31-Oct-2017	Handle failure to parse command-line.
-"	002	28-Dec-2014	Allow to configure all considered marks via
-"				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
-"				Roll s:FindRelativeLine() into s:FindMark() via
-"				the special mark "#". This makes this (and its
-"				precedence) configurable, too.
-"	001	25-Dec-2014	file creation
 let s:save_cpo = &cpo
 set cpo&vim
 

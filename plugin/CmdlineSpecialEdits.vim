@@ -2,38 +2,12 @@
 "
 " DEPENDENCIES:
 "   - Requires Vim 7.0 or higher.
+"   - ingo-library.vim plugin
 "
 " Copyright: (C) 2012-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	014	24-Sep-2019	Refactoring: Extract
-"				CmdlineSpecialEdits#SpecialRange#LastChange().
-"	013	08-Jul-2019	ENH: Add <C-g>/ mapping that converts
-"                               :substitute (or similar) pattern separators.
-"	012	05-Nov-2018	ENH: Add <C-g>+ mapping that converts between
-"				relative and absolute range addresses.
-"	011	03-Nov-2017	ENH: Add <A-(> mapping that (un-)wraps regexp in
-"				grouping \(...\), similar to what <A-/> does
-"				with whole word matching.
-"	010	31-Oct-2017	Don't insert literal ^X in non-search
-"				command-line on <A-/> / <A-?>.
-"	009	12-Sep-2017	BUG: Missed replacing some left-hand side
-"				original mapping with their new
-"				<Plug>-equivalents.
-"	008	09-Aug-2017	BUG: Missed function renaming in cmap <A-/>.
-"	007	24-Jul-2017	Add many command-line related mappings from
-"				ingomappings.vim.
-"	006	30-Mar-2015	Add mappings for adding regexp prefix / suffix.
-"	005	28-Dec-2014	Allow to configure all considered marks via
-"				g:CmdlineSpecialEdits_SymbolicRangeConsideredMarks.
-"	004	26-Dec-2014	Add configuration for symbolic ranges.
-"	003	25-Dec-2014	Add toggling between symbolic and number ranges.
-"	002	20-Jun-2014	Add toggling between :substitute and :SmartCase
-"				variants, and the corresponding search patterns.
-"	001	19-Jun-2012	file creation
 
 " Avoid installing twice or when in unsupported Vim version.
 if exists('g:loaded_CmdlineSpecialEdits') || (v:version < 700)

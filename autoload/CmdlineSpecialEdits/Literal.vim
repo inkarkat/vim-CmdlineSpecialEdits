@@ -3,13 +3,10 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2019 Ingo Karkat
+" Copyright: (C) 2019-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	001	14-Jul-2019	file creation
 let s:save_cpo = &cpo
 set cpo&vim
 

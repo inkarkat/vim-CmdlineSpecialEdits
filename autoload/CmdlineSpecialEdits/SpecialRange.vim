@@ -2,13 +2,10 @@
 "
 " DEPENDENCIES:
 "
-" Copyright: (C) 2019 Ingo Karkat
+" Copyright: (C) 2019-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	001	24-Sep-2019	file creation
 
 function! s:GetRange( startMark, endMark ) abort
     let l:lineDiff = line(a:endMark) - line(a:startMark)

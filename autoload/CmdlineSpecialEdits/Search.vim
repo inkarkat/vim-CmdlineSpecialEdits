@@ -3,18 +3,10 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2017-2019 Ingo Karkat
+" Copyright: (C) 2017-2020 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
-"
-" REVISION	DATE		REMARKS
-"	003	24-Sep-2019	Integrate ** overload.
-"	002	03-Nov-2017	Add CmdlineSpecialEdits#Search#ToggleGrouping().
-"				Extend
-"				CmdlineSpecialEdits#Search#ToggleWholeWord() to
-"				also account for capture groups in pattern.
-"	001	24-Jul-2017	file creation from ingomappings.vim
 
 function! CmdlineSpecialEdits#Search#SwitchSearchMode()
     return s:modifiedSearchPattern
