@@ -135,8 +135,8 @@ USAGE
                             When executed again on the result: Replace with the
                             alternative approach.
 
-    CTRL-G y                Yank the current command-line (to the default
-                            register).
+    CTRL-G Y                Yank the current command-line to the default register.
+    CTRL-G y{x}             Yank the current command-line into register x.
 
     CTRL-R CTRL-S           Insert the (single) character under the cursor.
     CTRL-R CTRL-L           Insert the current line (without leading indent and
@@ -269,7 +269,8 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
-    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-g>y <Plug>(CmdlineSpecialRegisterYankCommandLine)
+    cmap <C-g>Y <Plug>(CmdlineSpecialYankCommandLine)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
     cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
@@ -289,6 +290,10 @@ below).
 
 HISTORY
 ------------------------------------------------------------------------------
+
+##### 1.01    RELEASEME
+- CHG: Switch &lt;C-G&gt;y to &lt;C-G&gt;Y and add &lt;C-G&gt;y{x} variant that allows to pass
+  the register to yank the command-line to.
 
 ##### 1.00    10-Mar-2020
 - First published version.

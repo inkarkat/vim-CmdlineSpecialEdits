@@ -150,9 +150,9 @@ CTRL-G c		Convert alphabetic characters following \c (up to the
 			they apply to the whole pattern.)
 			When executed again on the result: Replace with the
 			alternative approach.
-								  *c_CTRL-G_y*
-CTRL-G y		Yank the current command-line (to the default
-			register).
+						     *c_CTRL-G_Y* *c_CTRL-G_y*
+CTRL-G Y		Yank the current command-line to the default register.
+CTRL-G y{x}		Yank the current command-line into register x.
 
 			 *c_CTRL-R_CTRL-L* *c_CTRL-R_CTRL-S* *c_CTRL-R_CTRL-Y*
 CTRL-R CTRL-S		Insert the (single) character under the cursor.
@@ -287,7 +287,8 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
-    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-g>y <Plug>(CmdlineSpecialRegisterYankCommandLine)
+    cmap <C-g>Y <Plug>(CmdlineSpecialYankCommandLine)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
     cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
@@ -315,6 +316,10 @@ below).
 
 ==============================================================================
 HISTORY						 *CmdlineSpecialEdits-history*
+
+1.01	RELEASEME
+- CHG: Switch <C-G>y to <C-G>Y and add <C-G>y{x} variant that allows to pass
+  the register to yank the command-line to.
 
 1.00	10-Mar-2020
 First published version.

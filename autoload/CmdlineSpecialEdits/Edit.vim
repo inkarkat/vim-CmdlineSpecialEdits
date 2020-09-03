@@ -35,4 +35,15 @@ function! CmdlineSpecialEdits#Edit#YankCommandLine( cmdline )
     return a:cmdline
 endfunction
 
+function! CmdlineSpecialEdits#Edit#RegisterYankCommandLine( cmdline )
+    let l:register = ingo#query#get#WritableRegister('')
+    if empty(l:register)
+	execute "normal! \<C-\>\<C-n>\<Esc>" | " Beep.
+	return a:cmdline
+    endif
+
+    call setreg(l:register, a:cmdline)
+    return a:cmdline
+endfunction
+
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :

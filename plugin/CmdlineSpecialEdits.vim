@@ -104,9 +104,13 @@ if ! hasmapto('<Plug>(CmdlineSpecialIgnoreCaseMixed)', 'c')
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
 endif
 
-cnoremap <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
+cnoremap <silent> <Plug>(CmdlineSpecialRegisterYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#RegisterYankCommandLine(getcmdline()))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialRegisterYankCommandLine)', 'c')
+    cmap <C-g>y <Plug>(CmdlineSpecialRegisterYankCommandLine)
+endif
+cnoremap <silent> <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialYankCommandLine)', 'c')
-    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-g>Y <Plug>(CmdlineSpecialYankCommandLine)
 endif
 
 cnoremap <Plug>(CmdlineSpecialInsertSelection) <C-r><C-r>=tr(ingo#selection#Get(), "\n", "\r")<CR>
