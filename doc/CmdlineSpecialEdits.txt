@@ -241,7 +241,7 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.041 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.043 or
   higher.
 - |SmartCase.vim| plugin (vimscript #1359, or my fork at
   https://github.com/inkarkat/vim-SmartCase) (optional, only for
@@ -320,6 +320,9 @@ HISTORY						 *CmdlineSpecialEdits-history*
 1.01	RELEASEME
 - CHG: Switch <C-G>y to <C-G>Y and add <C-G>y{x} variant that allows to pass
   the register to yank the command-line to.
+- Compatibility: ALT-SHIFT-/ and ALT-( default mappings broken since
+  Vim 8.2.851.
+  *** You need to update to ingo-library (vimscript #4433) version 1.043! ***
 
 1.00	10-Mar-2020
 First published version.
