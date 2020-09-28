@@ -158,19 +158,19 @@ endif
 nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleWholeWord) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleWholeWord("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'n')
-    execute printf('nmap <A-%s?> <Plug>(CmdlineSpecialToggleWholeWord)', ingo#compat#mapping#MetaShift())
+    nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 endif
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'c')
-    execute printf('cmap <A-%s?> <Plug>(CmdlineSpecialToggleWholeWord)', ingo#compat#mapping#MetaShift())
+    cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 endif
 
 nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleGrouping) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleGrouping("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'n')
-    execute printf('nmap <A-%s(> <Plug>(CmdlineSpecialToggleGrouping)', ingo#compat#mapping#MetaShift())
+    nmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)
 endif
 if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'c')
-    execute printf('cmap <A-%s(> <Plug>(CmdlineSpecialToggleGrouping)', ingo#compat#mapping#MetaShift())
+    cmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)
 endif
 
 " vim: set ts=8 sts=4 sw=4 noexpandtab ff=unix fdm=syntax :
