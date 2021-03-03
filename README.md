@@ -294,6 +294,8 @@ HISTORY
 ##### 1.01    RELEASEME
 - CHG: Switch &lt;C-G&gt;y to &lt;C-G&gt;Y and add &lt;C-G&gt;y{x} variant that allows to pass
   the register to yank the command-line to.
+- BUG: &lt;C-G&gt;&lt;C-S&gt; introduces an additional separator if the cursor is before
+  the final substitution separator (i.e. in the replacement part).
 
 ##### 1.00    10-Mar-2020
 - First published version.
@@ -302,7 +304,7 @@ HISTORY
 - Started development.
 
 ------------------------------------------------------------------------------
-Copyright: (C) 2012-2020 Ingo Karkat -
+Copyright: (C) 2012-2021 Ingo Karkat -
 The [VIM LICENSE](http://vimdoc.sourceforge.net/htmldoc/uganda.html#license) applies to this plugin.
 
 Maintainer:     Ingo Karkat &lt;ingo@karkat.de&gt;

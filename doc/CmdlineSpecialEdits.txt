@@ -320,6 +320,8 @@ HISTORY						 *CmdlineSpecialEdits-history*
 1.01	RELEASEME
 - CHG: Switch <C-G>y to <C-G>Y and add <C-G>y{x} variant that allows to pass
   the register to yank the command-line to.
+- BUG: <C-G><C-S> introduces an additional separator if the cursor is before
+  the final substitution separator (i.e. in the replacement part).
 
 1.00	10-Mar-2020
 First published version.
@@ -328,7 +330,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2012-2020 Ingo Karkat
+Copyright: (C) 2012-2021 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>
