@@ -241,7 +241,7 @@ To uninstall, use the |:RmVimball| command.
 DEPENDENCIES				    *CmdlineSpecialEdits-dependencies*
 
 - Requires Vim 7.0 or higher.
-- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.041 or
+- Requires the |ingo-library.vim| plugin (vimscript #4433), version 1.043 or
   higher.
 - |SmartCase.vim| plugin (vimscript #1359, or my fork at
   https://github.com/inkarkat/vim-SmartCase) (optional, only for
@@ -322,6 +322,7 @@ HISTORY						 *CmdlineSpecialEdits-history*
   the register to yank the command-line to.
 - BUG: <C-G><C-S> introduces an additional separator if the cursor is before
   the final substitution separator (i.e. in the replacement part).
+  *** You need to update to ingo-library (vimscript #4433) version 1.043! ***
 
 1.00	10-Mar-2020
 First published version.
@@ -330,7 +331,7 @@ First published version.
 Started development.
 
 ==============================================================================
-Copyright: (C) 2012-2021 Ingo Karkat
+Copyright: (C) 2012-2022 Ingo Karkat
 The VIM LICENSE applies to this plugin; see |copyright|.
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>

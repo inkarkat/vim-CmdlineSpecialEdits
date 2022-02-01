@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2019-2020 Ingo Karkat
+" Copyright: (C) 2019-2022 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -37,7 +37,7 @@ function! s:LiteralSubstitute( existingCommand, registerContents, args ) abort
 	\ingo#cmdargs#substitute#Parse(a:args . l:sentinel, {'emptyReplacement': '', 'emptyFlags': ['', '']})
 
     if l:replacement =~# l:sentinel
-	return a:existingCommand . escape(a:registerContents, '\' . (&magic ? '&~' : '') . l:separator)
+	return a:existingCommand . ingo#regexp#EscapeLiteralReplacement(a:registerContents, l:separator)
     else
 	" This is also the fallback for any other location.
 	return s:AppendLiteralPattern(a:existingCommand, a:registerContents, l:separator)
