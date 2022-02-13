@@ -60,7 +60,7 @@ function! CmdlineSpecialEdits#Literal#Register() abort
 		let l:resultBeforeCursor = s:LiteralPut(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
 		call setcmdpos(strlen(l:resultBeforeCursor) + 1)
 		return l:resultBeforeCursor . l:cmdlineAfterCursor
-	    elseif l:commandName =~# '^s\%[ubstitute]$\|^Substitute' ||
+	    elseif l:commandName =~# '^s\%[ubstitute]$' . (empty(g:CmdlineSpecialEdits_SubstitutionCommandsExpr) ? '' : '\|' . g:CmdlineSpecialEdits_SubstitutionCommandsExpr) ||
 	    \   ingo#str#Trim(l:commandDirectArgs . l:commandArgs . l:cmdlineAfterCursor) =~# '^' . ingo#cmdargs#pattern#PatternExpr() . '$'
 		" :substitute or an alike custom command.
 		let l:resultBeforeCursor =  s:LiteralSubstitute(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)

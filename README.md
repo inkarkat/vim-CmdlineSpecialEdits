@@ -250,6 +250,13 @@ If you don't want the CmdlineSpecialEdits-SpecialSearchModes (e.g. //, /?,
 
 Remapping to other keys isn't possible here.
 
+The c\_CTRL-R\_CTRL\_V mapping does literal pattern / replacement in the
+built-in :substitute command as well as any custom command starting with
+:Substitute or :SmartCase; you can extend or change the list of custom
+commands via a regular expression in:
+
+    let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^cmd1$\|^prefix'
+
 If you want to use different mappings, map your keys to the
 &lt;Plug&gt;(CmdlineSpecialEdits...) mapping targets _before_ sourcing the script
 (e.g. in your vimrc):
@@ -296,6 +303,8 @@ HISTORY
   the register to yank the command-line to.
 - BUG: &lt;C-G&gt;&lt;C-S&gt; introduces an additional separator if the cursor is before
   the final substitution separator (i.e. in the replacement part).
+- ENH: Allow customization of the &lt;C-R&gt;&lt;C-V&gt; literal pattern / replacement for
+  custom :Substitute commands and add :SmartCase by default.
 
 __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.043!__
 

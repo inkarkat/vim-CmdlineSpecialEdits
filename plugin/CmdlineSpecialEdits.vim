@@ -4,7 +4,7 @@
 "   - Requires Vim 7.0 or higher.
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2012-2020 Ingo Karkat
+" Copyright: (C) 2012-2022 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -25,6 +25,9 @@ if ! exists('g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset')
 endif
 if ! exists('g:CmdlineSpecialEdits_EnableSpecialSearchMode')
     let g:CmdlineSpecialEdits_EnableSpecialSearchMode = 1
+endif
+if ! exists('g:CmdlineSpecialEdits_SubstitutionCommandsExpr')
+    let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^Substitute\|^SmartCase'
 endif
 
 
