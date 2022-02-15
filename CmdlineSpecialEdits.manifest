@@ -1,6 +1,7 @@
 autoload/CmdlineSpecialEdits.vim
 autoload/CmdlineSpecialEdits/Edit.vim
 autoload/CmdlineSpecialEdits/IgnoreCase.vim
+autoload/CmdlineSpecialEdits/Iterate.vim
 autoload/CmdlineSpecialEdits/Literal.vim
 autoload/CmdlineSpecialEdits/Range.vim
 autoload/CmdlineSpecialEdits/Recall.vim

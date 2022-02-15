@@ -105,6 +105,16 @@ USAGE
                             longer filespec (with Unix-style forward path
                             separators), so tedious escaping would be necessary.
 
+    CTRL-G ad               Prepend :Argdo to the entire command-line.
+    CTRL-G aw               Prepend :ArgdoWrite to the entire command-line.
+    CTRL-G wd               Prepend :Winbufdo to the entire command-line.
+    CTRL-G ww               Prepend :WinbufdoWrite to the entire command-line.
+    CTRL-G td               Prepend :Tabwindo to the entire command-line.
+    CTRL-G tw               Prepend :TabwindoWrite to the entire command-line.
+                            If the (last) command is a :substitute (or similar),
+                            also append the :s_e flag so that buffers that don't
+                            match the pattern don't cause an error.
+
     CTRL-G CTRL-H           Apply literal <BS> and <C-h> keys (e.g. when editing a
                             macro inline via q"{reg}) by removing them and the
                             previously pressed key.
@@ -222,6 +232,8 @@ To uninstall, use the :RmVimball command.
 - Requires Vim 7.0 or higher.
 - Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.043 or
   higher.
+- ArgsAndMore.vim plugin ([vimscript #4152](http://www.vim.org/scripts/script.php?script_id=4152)) (optional; providing :Argdo et
+  al. for the c\_CTRL-G\_ad etc. mappings).
 - SmartCase.vim plugin ([vimscript #1359](http://www.vim.org/scripts/script.php?script_id=1359), or my fork at
   https://github.com/inkarkat/vim-SmartCase) (optional, only for
   c\_CTRL-G\_CTRL-S).
@@ -252,8 +264,9 @@ Remapping to other keys isn't possible here.
 
 The c\_CTRL-R\_CTRL\_V mapping does literal pattern / replacement in the
 built-in :substitute command as well as any custom command starting with
-:Substitute or :SmartCase; you can extend or change the list of custom
-commands via a regular expression in:
+:Substitute or :SmartCase. The c\_CTRL-G\_ad etc. mappings add the :s\_e flag
+to substitutions. You can extend or change the list of custom commands that
+are considered via a regular expression in:
 
     let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^cmd1$\|^prefix'
 
@@ -267,6 +280,12 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
+    cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
+    cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+    cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
+    cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
+    cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)
+    cmap <C-g>tw <Plug>(CmdlineSpecialIterateTabwindoWrite)
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
     cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
@@ -298,13 +317,16 @@ below).
 HISTORY
 ------------------------------------------------------------------------------
 
-##### 1.01    RELEASEME
+##### 1.10    RELEASEME
 - CHG: Switch &lt;C-G&gt;y to &lt;C-G&gt;Y and add &lt;C-G&gt;y{x} variant that allows to pass
   the register to yank the command-line to.
 - BUG: &lt;C-G&gt;&lt;C-S&gt; introduces an additional separator if the cursor is before
   the final substitution separator (i.e. in the replacement part).
 - ENH: Allow customization of the &lt;C-R&gt;&lt;C-V&gt; literal pattern / replacement for
   custom :Substitute commands and add :SmartCase by default.
+- ENH: Add &lt;C-G&gt;ad, &lt;C-G&gt;aw, ... mappings that prepend the :Argdo,
+  :ArgdoWrite, etc. commands provided by ArgsAndMore.vim to the command-line
+  (and append the :s\_e flag to a :substitute command).
 
 __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.043!__
 

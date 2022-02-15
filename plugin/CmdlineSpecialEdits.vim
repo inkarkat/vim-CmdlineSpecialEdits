@@ -58,9 +58,35 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
 endif
 
+" Note: We can have <silent> here because of the query for the new separator.
 cnoremap <silent> <Plug>(CmdlineSpecialChangeSubstitutionSep) <C-\>e(CmdlineSpecialEdits#Substitute#ChangeSeparator())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialChangeSubstitutionSep)', 'c')
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
+endif
+
+cnoremap <Plug>(CmdlineSpecialIterateArgdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('Argdo'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateArgdo)', 'c')
+    cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
+endif
+cnoremap <Plug>(CmdlineSpecialIterateArgdoWrite) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('ArgdoWrite'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateArgdoWrite)', 'c')
+    cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+endif
+cnoremap <Plug>(CmdlineSpecialIterateWinbufdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('Winbufdo'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateWinbufdo)', 'c')
+    cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
+endif
+cnoremap <Plug>(CmdlineSpecialIterateWinbufdoWrite) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('WinbufdoWrite'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateWinbufdoWrite)', 'c')
+    cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
+endif
+cnoremap <Plug>(CmdlineSpecialIterateTabwindo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('Tabwindo'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateTabwindo)', 'c')
+    cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)
+endif
+cnoremap <Plug>(CmdlineSpecialIterateTabwindoWrite) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('TabwindoWrite'))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialIterateTabwindoWrite)', 'c')
+    cmap <C-g>tw <Plug>(CmdlineSpecialIterateTabwindoWrite)
 endif
 
 cnoremap <Plug>(CmdlineSpecialDeleteToEnd) <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
