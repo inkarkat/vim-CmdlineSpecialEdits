@@ -34,7 +34,7 @@ function! s:LiteralSubstitute( existingCommand, registerContents, args ) abort
     " current cursor position) a <Nul> character and searching for it.
     let l:sentinel = "\<Nul>"
     let [l:separator, l:pattern, l:replacement, l:flags, l:count] =
-	\ingo#cmdargs#substitute#Parse(a:args . l:sentinel, {'emptyReplacement': '', 'emptyFlags': ['', '']})
+    \   ingo#cmdargs#substitute#Parse(a:args . l:sentinel, {'emptyReplacement': '', 'emptyFlags': ['', '']})
 
     if l:replacement =~# l:sentinel
 	return a:existingCommand . ingo#regexp#EscapeLiteralReplacement(a:registerContents, l:separator)
