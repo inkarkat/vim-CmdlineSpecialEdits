@@ -126,6 +126,9 @@ CTRL-G wd		Prepend |:Winbufdo| to the entire command-line.
 CTRL-G ww		Prepend |:WinbufdoWrite| to the entire command-line.
 CTRL-G td		Prepend |:Tabwindo| to the entire command-line.
 CTRL-G tw		Prepend |:TabwindoWrite| to the entire command-line.
+			If the (last) command is a |:substitute| (or similar),
+			also append the |:s_e| flag so that buffers that don't
+			match the pattern don't cause an error.
 							     *c_CTRL-G_CTRL-H*
 CTRL-G CTRL-H		Apply literal <BS> and <C-h> keys (e.g. when editing a
 			macro inline via q"{reg}) by removing them and the
