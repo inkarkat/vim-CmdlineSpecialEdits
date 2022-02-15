@@ -283,8 +283,9 @@ Remapping to other keys isn't possible here.
 			      *g:CmdlineSpecialEdits_SubstitutionCommandsExpr*
 The |c_CTRL-R_CTRL_V| mapping does literal pattern / replacement in the
 built-in :substitute command as well as any custom command starting with
-:Substitute or :SmartCase; you can extend or change the list of custom
-commands via a regular expression in: >
+:Substitute or :SmartCase. The |c_CTRL-G_ad| etc. mappings add the |:s_e| flag
+to substitutions. You can extend or change the list of custom commands that
+are considered via a regular expression in: >
     let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^cmd1$\|^prefix'
 <
 						   *CmdlineSpecialEdits-remap*
@@ -297,6 +298,12 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
+    cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
+    cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+    cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
+    cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
+    cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)
+    cmap <C-g>tw <Plug>(CmdlineSpecialIterateTabwindoWrite)
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
     cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
@@ -336,13 +343,16 @@ below).
 ==============================================================================
 HISTORY						 *CmdlineSpecialEdits-history*
 
-1.01	RELEASEME
+1.10	RELEASEME
 - CHG: Switch <C-G>y to <C-G>Y and add <C-G>y{x} variant that allows to pass
   the register to yank the command-line to.
 - BUG: <C-G><C-S> introduces an additional separator if the cursor is before
   the final substitution separator (i.e. in the replacement part).
 - ENH: Allow customization of the <C-R><C-V> literal pattern / replacement for
   custom :Substitute commands and add :SmartCase by default.
+- ENH: Add <C-G>ad, <C-G>aw, ... mappings that prepend the :Argdo,
+  :ArgdoWrite, etc. commands provided by ArgsAndMore.vim to the command-line
+  (and append the :s_e flag to a :substitute command).
   *** You need to update to ingo-library (vimscript #4433) version 1.043! ***
 
 1.00	10-Mar-2020
