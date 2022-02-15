@@ -13,3 +13,4 @@ autoload/CmdlineSpecialEdits/SpecialRange.vim
 autoload/CmdlineSpecialEdits/Substitute.vim
 plugin/CmdlineSpecialEdits.vim
 doc/CmdlineSpecialEdits.txt
+after/plugin/CmdlineSpecialEdits.vim

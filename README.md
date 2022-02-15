@@ -105,11 +105,13 @@ USAGE
                             longer filespec (with Unix-style forward path
                             separators), so tedious escaping would be necessary.
 
-    CTRL-G ad               Prepend :Argdo to the entire command-line.
+    CTRL-G ad               Prepend :argdo / :Argdo to the entire command-line.
     CTRL-G aw               Prepend :ArgdoWrite to the entire command-line.
-    CTRL-G wd               Prepend :Winbufdo to the entire command-line.
+    CTRL-G wd               Prepend :windo / :Winbufdo to the entire
+                            command-line.
     CTRL-G ww               Prepend :WinbufdoWrite to the entire command-line.
-    CTRL-G td               Prepend :Tabwindo to the entire command-line.
+    CTRL-G td               Prepend :tabdo||windo / :Tabwindo to the entire
+                            command-line.
     CTRL-G tw               Prepend :TabwindoWrite to the entire command-line.
                             If the (last) command is a :substitute (or similar),
                             also append the :s_e flag so that buffers that don't
