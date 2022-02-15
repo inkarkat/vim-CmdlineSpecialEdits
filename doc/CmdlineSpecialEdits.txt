@@ -119,10 +119,14 @@ CTRL-G / {sep}		Change the separator of the current |:substitute| (or
 			the default "/" separators but now want to insert a
 			longer filespec (with Unix-style forward path
 			separators), so tedious escaping would be necessary.
-*c_CTRL-G_ad* *c_CTRL-G_aw* *c_CTRL-G_wd* *c_CTRL-G_ww* *c_CTRL-G_td* *c_CTRL-G_tw*
+		       *c_CTRL-G_ad* *c_CTRL-G_aw* *c_CTRL-G_bd* *c_CTRL-G_bw*
+		       *c_CTRL-G_wd* *c_CTRL-G_ww* *c_CTRL-G_td* *c_CTRL-G_tw*
 CTRL-G ad		Prepend |:argdo| / |:Argdo| to the entire
 			command-line.
 CTRL-G aw		Prepend |:ArgdoWrite| to the entire command-line.
+CTRL-G bd		Prepend |:bufdo| / |:Bufdo| to the entire
+			command-line.
+CTRL-G bw		Prepend |:BufdoWrite| to the entire command-line.
 CTRL-G wd		Prepend |:windo| / |:Winbufdo| to the entire
 			command-line.
 CTRL-G ww		Prepend |:WinbufdoWrite| to the entire command-line.
@@ -303,6 +307,8 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
     cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
     cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+    cmap <C-g>bd <Plug>(CmdlineSpecialIterateBufdo)
+    cmap <C-g>bw <Plug>(CmdlineSpecialIterateBufdoWrite)
     cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
     cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
     cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)

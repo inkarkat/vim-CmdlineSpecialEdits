@@ -105,8 +105,12 @@ USAGE
                             longer filespec (with Unix-style forward path
                             separators), so tedious escaping would be necessary.
 
-    CTRL-G ad               Prepend :argdo / :Argdo to the entire command-line.
+    CTRL-G ad               Prepend :argdo / :Argdo to the entire
+                            command-line.
     CTRL-G aw               Prepend :ArgdoWrite to the entire command-line.
+    CTRL-G bd               Prepend :bufdo / :Bufdo to the entire
+                            command-line.
+    CTRL-G bw               Prepend :BufdoWrite to the entire command-line.
     CTRL-G wd               Prepend :windo / :Winbufdo to the entire
                             command-line.
     CTRL-G ww               Prepend :WinbufdoWrite to the entire command-line.
@@ -284,6 +288,8 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
     cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
     cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+    cmap <C-g>bd <Plug>(CmdlineSpecialIterateBufdo)
+    cmap <C-g>bw <Plug>(CmdlineSpecialIterateBufdoWrite)
     cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
     cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
     cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)

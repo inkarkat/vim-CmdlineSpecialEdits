@@ -20,6 +20,14 @@ if exists(':Argdo') == 2
     if ! hasmapto('<Plug>(CmdlineSpecialIterateArgdoWrite)', 'c')
 	cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
     endif
+    cnoremap <Plug>(CmdlineSpecialIterateBufdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('Bufdo'))<CR>
+    if ! hasmapto('<Plug>(CmdlineSpecialIterateBufdo)', 'c')
+	cmap <C-g>bd <Plug>(CmdlineSpecialIterateBufdo)
+    endif
+    cnoremap <Plug>(CmdlineSpecialIterateBufdoWrite) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('BufdoWrite'))<CR>
+    if ! hasmapto('<Plug>(CmdlineSpecialIterateBufdoWrite)', 'c')
+	cmap <C-g>bw <Plug>(CmdlineSpecialIterateBufdoWrite)
+    endif
     cnoremap <Plug>(CmdlineSpecialIterateWinbufdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('Winbufdo'))<CR>
     if ! hasmapto('<Plug>(CmdlineSpecialIterateWinbufdo)', 'c')
 	cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
@@ -40,6 +48,10 @@ else
     cnoremap <Plug>(CmdlineSpecialIterateArgdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('argdo'))<CR>
     if ! hasmapto('<Plug>(CmdlineSpecialIterateArgdo)', 'c')
 	cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
+    endif
+    cnoremap <Plug>(CmdlineSpecialIterateBufdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('bufdo'))<CR>
+    if ! hasmapto('<Plug>(CmdlineSpecialIterateBufdo)', 'c')
+	cmap <C-g>bd <Plug>(CmdlineSpecialIterateBufdo)
     endif
     cnoremap <Plug>(CmdlineSpecialIterateWinbufdo) <C-\>e(CmdlineSpecialEdits#Iterate#Prepend('windo'))<CR>
     if ! hasmapto('<Plug>(CmdlineSpecialIterateWinbufdo)', 'c')
