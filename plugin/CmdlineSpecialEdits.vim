@@ -150,7 +150,7 @@ if g:CmdlineSpecialEdits_EnableSpecialSearchMode
     cnoremap <expr> * CmdlineSpecialEdits#Search#SpecialSearchMode('*')
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleMode(getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'n')
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
@@ -159,7 +159,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'c')
     cmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleWholeWord) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleWholeWord("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'n')
     nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
@@ -168,7 +168,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'c')
     cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleGrouping) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleGrouping("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'n')
     nmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)

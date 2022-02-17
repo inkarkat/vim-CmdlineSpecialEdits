@@ -335,6 +335,8 @@ HISTORY
 - ENH: Add &lt;C-G&gt;ad, &lt;C-G&gt;aw, ... mappings that prepend the :Argdo,
   :ArgdoWrite, etc. commands provided by ArgsAndMore.vim to the command-line
   (and append the :s\_e flag to a :substitute command).
+- ENH: Also add the search pattern toggled via normal mode &lt;A-/&gt;, &lt;A-?&gt;, &lt;A-(&gt;
+  to the search history.
 
 __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.043!__
 
