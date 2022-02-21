@@ -338,7 +338,7 @@ HISTORY
 - ENH: Also add the search pattern toggled via normal mode &lt;A-/&gt;, &lt;A-?&gt;, &lt;A-(&gt;
   to the search history.
 
-__You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.043!__
+__You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.044!__
 
 ##### 1.00    10-Mar-2020
 - First published version.

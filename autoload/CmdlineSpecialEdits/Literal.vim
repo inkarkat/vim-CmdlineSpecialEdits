@@ -49,7 +49,7 @@ function! s:LiteralPut( existingCommand, registerContents, args ) abort
 endfunction
 function! CmdlineSpecialEdits#Literal#Register() abort
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentCmdline()
-    let l:registerContents = getreg(ingo#query#get#Register('\'))
+    let l:registerContents = getreg(ingo#query#get#Register({'errorRegister': '\'}))
 
     if getcmdtype() =~# '^[:>]$'
 	let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '.*$')

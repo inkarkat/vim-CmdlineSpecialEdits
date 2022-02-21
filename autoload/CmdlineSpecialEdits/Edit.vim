@@ -2,7 +2,7 @@
 "
 " DEPENDENCIES:
 "
-" Copyright: (C) 2015-2020 Ingo Karkat
+" Copyright: (C) 2015-2022 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -36,7 +36,7 @@ function! CmdlineSpecialEdits#Edit#YankCommandLine( cmdline )
 endfunction
 
 function! CmdlineSpecialEdits#Edit#RegisterYankCommandLine( cmdline )
-    let l:register = ingo#query#get#WritableRegister('')
+    let l:register = ingo#query#get#WritableRegister()
     if empty(l:register)
 	execute "normal! \<C-\>\<C-n>\<Esc>" | " Beep.
 	return a:cmdline
