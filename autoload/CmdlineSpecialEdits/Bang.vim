@@ -17,11 +17,12 @@ function! CmdlineSpecialEdits#Bang#Toggle() abort
 
     let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
 
-    let l:commandBang = (empty(l:commandBang) ? '!' : '')
+    let [l:commandBang, l:cursorOffset] = (empty(l:commandBang) ? ['!', 1] : ['', -1])
 
     let l:commandWithToggledBang = join([l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs], '')
     let l:previousCommands = strpart(l:cmdlineBeforeCursor, 0, strridx(l:cmdlineBeforeCursor, l:fullCommandUnderCursor))
 
+    call setcmdpos(strlen(l:cmdlineBeforeCursor) + 1 + l:cursorOffset)
     return l:previousCommands . l:commandWithToggledBang . l:cmdlineAfterCursor
 endfunction
 
