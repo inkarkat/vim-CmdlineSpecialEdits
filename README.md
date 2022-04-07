@@ -66,6 +66,10 @@ USAGE
                             the end of the line. Like c_CTRL-U, but in the other
                             direction. Like D, but in command-line mode.
 
+    CTRL-G !                Toggle a [!] after the closest previous command.
+                            When used on an empty command line, recalls the
+                            previous command-line from history first.
+
     CTRL-G '                Change symbolic ranges like '<,'> to the actual line
                             numbers, and vice versa. Also corrects addressing out
                             of bounds (<= 0 and larger than the last line number)
@@ -295,6 +299,7 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)
     cmap <C-g>tw <Plug>(CmdlineSpecialIterateTabwindoWrite)
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
+    cmap <C-g>! <Plug>(CmdlineSpecialToggleBang)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
     cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
     cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
@@ -337,6 +342,7 @@ HISTORY
   (and append the :s\_e flag to a :substitute command).
 - ENH: Also add the search pattern toggled via normal mode &lt;A-/&gt;, &lt;A-?&gt;, &lt;A-(&gt;
   to the search history.
+- ENH: Add &lt;C-G&gt;! to toggle a command's bang ([!]).
 
 __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.044!__
 

@@ -69,6 +69,11 @@ if ! hasmapto('<Plug>(CmdlineSpecialDeleteToEnd)', 'c')
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
 endif
 
+cnoremap <Plug>(CmdlineSpecialToggleBang) <C-\>e(CmdlineSpecialEdits#Bang#Toggle())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialToggleBang)', 'c')
+    cmap <C-g>! <Plug>(CmdlineSpecialToggleBang)
+endif
+
 cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSymbolicRange)', 'c')
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)

@@ -1,4 +1,5 @@
 autoload/CmdlineSpecialEdits.vim
+autoload/CmdlineSpecialEdits/Bang.vim
 autoload/CmdlineSpecialEdits/Edit.vim
 autoload/CmdlineSpecialEdits/IgnoreCase.vim
 autoload/CmdlineSpecialEdits/Iterate.vim
