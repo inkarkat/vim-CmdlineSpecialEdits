@@ -97,6 +97,11 @@ function! CmdlineSpecialEdits#Search#ToggleMode( searchPattern )
 
     return '\c' . a:searchPattern
 endfunction
+function! s:ParsePrefixAtomsAndGrouping( pattern ) abort
+    let [l:prefixAtoms, l:searchPattern] = matchlist(a:pattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
+    let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
+    return [l:prefixAtoms, l:groupedSearchPattern, l:searchPattern]
+endfunction
 function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
     if empty(a:searchPattern) && a:mode ==# 'c'
 	call setcmdpos(3)
@@ -105,9 +110,7 @@ function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
 
     let l:strippedSearchPattern = s:StripSearchMode('\<', a:searchPattern)
     if a:searchPattern !=# l:strippedSearchPattern
-	let [l:prefixAtoms, l:searchPattern] = matchlist(l:strippedSearchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
-	let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
-
+	let [l:prefixAtoms, l:groupedSearchPattern, l:searchPattern] = s:ParsePrefixAtomsAndGrouping(l:strippedSearchPattern)
 	return l:prefixAtoms . ingo#regexp#MakeWholeWORDSearch(l:groupedSearchPattern, l:searchPattern)
     endif
 
@@ -116,8 +119,7 @@ function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
 	return l:strippedSearchPattern
     endif
 
-    let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
-    let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
+    let [l:prefixAtoms, l:groupedSearchPattern, l:searchPattern] = s:ParsePrefixAtomsAndGrouping(a:searchPattern)
     return l:prefixAtoms . ingo#regexp#MakeWholeWordSearch(l:groupedSearchPattern, l:searchPattern)
 endfunction
 function! CmdlineSpecialEdits#Search#ToggleGrouping( mode, searchPattern )
