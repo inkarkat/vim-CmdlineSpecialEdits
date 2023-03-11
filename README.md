@@ -213,8 +213,8 @@ USAGE
     ALT-/                   Toggle search mode between normal, case-insensitive,
                             and literal.
 
-    ALT-SHIFT-/             Toggle search mode between whole word (\<...\>) and
-                            normal matching.
+    ALT-SHIFT-/             Toggle search mode between normal, whole word
+                            (\<...\>) and whole \_sWORD\_s matching.
 
     ALT-(                   (Un-)wrap search pattern in capturing group \(...\).
 
@@ -343,6 +343,7 @@ HISTORY
 - ENH: Also add the search pattern toggled via normal mode &lt;A-/&gt;, &lt;A-?&gt;, &lt;A-(&gt;
   to the search history.
 - ENH: Add &lt;C-G&gt;! to toggle a command's bang ([!]).
+- ENH: Add whole \\\_sWORD\\\_s matching to ALT-SHIFT-/ toggling as a third mode.
 
 __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.044!__
 
@@ -353,7 +354,7 @@ __You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scrip
 - Started development.
 
 ------------------------------------------------------------------------------
-Copyright: (C) 2012-2022 Ingo Karkat -
+Copyright: (C) 2012-2023 Ingo Karkat -
 The [VIM LICENSE](http://vimdoc.sourceforge.net/htmldoc/uganda.html#license) applies to this plugin.
 
 Maintainer:     Ingo Karkat &lt;ingo@karkat.de&gt;
