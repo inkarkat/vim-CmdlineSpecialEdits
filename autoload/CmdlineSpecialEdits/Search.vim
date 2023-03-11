@@ -22,6 +22,8 @@ function! s:StripSearchMode( mode, searchPattern )
 	return substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[cC]', '', 'g')
     elseif a:mode ==# '\<'
 	return substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[<>]', '', 'g')
+    elseif a:mode ==# '\s'
+	return substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\%(\%(\^\\|\\s\\)\\@<=\|\\s\\|\$\\)\\@=\)', '', 'g')
     elseif a:mode ==# l:flexibleWhitespacePattern
 	if ingo#str#Contains(a:searchPattern, a:mode)
 	    return substitute(a:searchPattern, '\V' . escape(a:mode, '\'), ' ', 'g')
@@ -102,13 +104,21 @@ function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
     endif
 
     let l:strippedSearchPattern = s:StripSearchMode('\<', a:searchPattern)
-    if a:searchPattern ==# l:strippedSearchPattern
-	let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
+    if a:searchPattern !=# l:strippedSearchPattern
+	let [l:prefixAtoms, l:searchPattern] = matchlist(l:strippedSearchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
 	let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
-	return l:prefixAtoms . ingo#regexp#MakeWholeWordSearch(l:groupedSearchPattern, l:searchPattern)
-    else
+
+	return l:prefixAtoms . ingo#regexp#MakeWholeWORDSearch(l:groupedSearchPattern, l:searchPattern)
+    endif
+
+    let l:strippedSearchPattern = s:StripSearchMode('\s', a:searchPattern)
+    if a:searchPattern !=# l:strippedSearchPattern
 	return l:strippedSearchPattern
     endif
+
+    let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
+    let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
+    return l:prefixAtoms . ingo#regexp#MakeWholeWordSearch(l:groupedSearchPattern, l:searchPattern)
 endfunction
 function! CmdlineSpecialEdits#Search#ToggleGrouping( mode, searchPattern )
     if empty(a:searchPattern) && a:mode ==# 'c'
