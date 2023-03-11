@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2017-2020 Ingo Karkat
+" Copyright: (C) 2017-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -20,6 +20,8 @@ function! s:StripSearchMode( mode, searchPattern )
     elseif a:mode ==# '\c'
 	" Toggle case-insensitive search.
 	return substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[cC]', '', 'g')
+    elseif a:mode ==# '\<'
+	return substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[<>]', '', 'g')
     elseif a:mode ==# l:flexibleWhitespacePattern
 	if ingo#str#Contains(a:searchPattern, a:mode)
 	    return substitute(a:searchPattern, '\V' . escape(a:mode, '\'), ' ', 'g')
@@ -99,7 +101,7 @@ function! CmdlineSpecialEdits#Search#ToggleWholeWord( mode, searchPattern )
 	return '\<\>'
     endif
 
-    let l:strippedSearchPattern = substitute(a:searchPattern, '\%(\%(^\|[^\\]\)\%(\\\\\)*\\\)\@<!\\[<>]', '', 'g')
+    let l:strippedSearchPattern = s:StripSearchMode('\<', a:searchPattern)
     if a:searchPattern ==# l:strippedSearchPattern
 	let [l:prefixAtoms, l:searchPattern] = matchlist(a:searchPattern, '^\(\%(\\[cCvVmM]\)*\)\(.*\)$')[1:2]
 	let [l:groupingStart, l:groupedSearchPattern, l:groupingEnd] = matchlist(l:searchPattern, '^\(\%(\\%\?(\)*\)\(.\{-}\)\(\%(\\)\)\)*$')[1:3]
