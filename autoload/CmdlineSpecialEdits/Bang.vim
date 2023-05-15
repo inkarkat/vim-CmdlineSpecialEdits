@@ -2,7 +2,7 @@
 "
 " DEPENDENCIES:
 "
-" Copyright: (C) 2022 Ingo Karkat
+" Copyright: (C) 2022-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -15,11 +15,11 @@ function! CmdlineSpecialEdits#Bang#Toggle() abort
 	return getcmdline()
     endif
 
-    let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+    let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
 
     let [l:commandBang, l:cursorOffset] = (empty(l:commandBang) ? ['!', 1] : ['', -1])
 
-    let l:commandWithToggledBang = join([l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs], '')
+    let l:commandWithToggledBang = join([l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs], '')
     let l:previousCommands = strpart(l:cmdlineBeforeCursor, 0, strridx(l:cmdlineBeforeCursor, l:fullCommandUnderCursor))
 
     call setcmdpos(strlen(l:cmdlineBeforeCursor) + 1 + l:cursorOffset)

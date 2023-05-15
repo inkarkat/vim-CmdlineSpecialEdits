@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014-2020 Ingo Karkat
+" Copyright: (C) 2014-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -27,8 +27,8 @@ function! CmdlineSpecialEdits#Remove#CommandArguments()
     if empty(l:commandParse)
 	return getcmdline()
     else
-	let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
-	let l:commandWithoutArgs = join([l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang], '')
+	let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+	let l:commandWithoutArgs = join([l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang], '')
 
 	let l:previousCommands = strpart(l:cmdlineBeforeCursor, 0, strridx(l:cmdlineBeforeCursor, l:fullCommandUnderCursor))
 	let l:cmdlineWithoutArguments = l:previousCommands . l:commandWithoutArgs . (empty(l:commandArgs) ? '' : ' ')
@@ -43,8 +43,8 @@ function! CmdlineSpecialEdits#Remove#CommandName()
     if empty(l:commandParse)
 	return getcmdline()
     else
-	let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
-	let l:commandWithoutCommand = join([l:combiner, l:range, l:commandCommands], '')
+	let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+	let l:commandWithoutCommand = join([l:combiner, l:commandCommands, l:range], '')
 	let l:commandArguments = join([l:commandDirectArgs, l:commandArgs], '')
 
 	let l:previousCommands = strpart(l:cmdlineBeforeCursor, 0, strridx(l:cmdlineBeforeCursor, l:fullCommandUnderCursor))

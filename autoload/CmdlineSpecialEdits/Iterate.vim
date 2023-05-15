@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2022 Ingo Karkat
+" Copyright: (C) 2022-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -15,7 +15,7 @@ function! s:AddErrorSuppressionFlag( cmdline ) abort
 	return a:cmdline
     endif
 
-    let [l:lastFullCommand, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+    let [l:lastFullCommand, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
     let l:changedCommand = l:lastFullCommand
     if l:commandName !~# '^s\%[ubstitute]$' . (empty(g:CmdlineSpecialEdits_SubstitutionCommandsExpr) ? '' : '\|' . g:CmdlineSpecialEdits_SubstitutionCommandsExpr)
 	return a:cmdline
@@ -29,7 +29,7 @@ function! s:AddErrorSuppressionFlag( cmdline ) abort
 	return a:cmdline
     endif
 
-    let l:changedCommand = l:combiner . l:range . l:commandCommands . l:commandName . l:commandBang . l:commandArgsWhitespace .
+    let l:changedCommand = l:combiner . l:commandCommands . l:range . l:commandName . l:commandBang . l:commandArgsWhitespace .
     \   l:separator . l:pattern . l:separator . l:replacement . l:separator .
     \   l:flags . 'e' . l:count
 

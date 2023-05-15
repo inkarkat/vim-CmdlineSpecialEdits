@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2019-2022 Ingo Karkat
+" Copyright: (C) 2019-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -20,8 +20,8 @@ function! CmdlineSpecialEdits#Substitute#ChangeSeparator() abort
     if empty(l:commandParse)
 	return getcmdline()
     endif
-    let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
-    let l:commandWithoutArgs = join([l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang], '')
+    let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+    let l:commandWithoutArgs = join([l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang], '')
     let l:previousCommands = strpart(l:cmdline, 0, strridx(l:cmdline, l:fullCommandUnderCursor))
     let l:args = l:commandDirectArgs . l:commandArgs
     if empty(l:args)
