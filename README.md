@@ -66,6 +66,10 @@ USAGE
                             the end of the line. Like c_CTRL-U, but in the other
                             direction. Like D, but in command-line mode.
 
+    CTRL-G !                Toggle a [!] after the closest previous command.
+                            When used on an empty command line, recalls the
+                            previous command-line from history first.
+
     CTRL-G '                Change symbolic ranges like '<,'> to the actual line
                             numbers, and vice versa. Also corrects addressing out
                             of bounds (<= 0 and larger than the last line number)
@@ -105,6 +109,22 @@ USAGE
                             longer filespec (with Unix-style forward path
                             separators), so tedious escaping would be necessary.
 
+    CTRL-G ad               Prepend :argdo / :Argdo to the entire
+                            command-line.
+    CTRL-G aw               Prepend :ArgdoWrite to the entire command-line.
+    CTRL-G bd               Prepend :bufdo / :Bufdo to the entire
+                            command-line.
+    CTRL-G bw               Prepend :BufdoWrite to the entire command-line.
+    CTRL-G wd               Prepend :windo / :Winbufdo to the entire
+                            command-line.
+    CTRL-G ww               Prepend :WinbufdoWrite to the entire command-line.
+    CTRL-G td               Prepend :tabdo||windo / :Tabwindo to the entire
+                            command-line.
+    CTRL-G tw               Prepend :TabwindoWrite to the entire command-line.
+                            If the (last) command is a :substitute (or similar),
+                            also append the :s_e flag so that buffers that don't
+                            match the pattern don't cause an error.
+
     CTRL-G CTRL-H           Apply literal <BS> and <C-h> keys (e.g. when editing a
                             macro inline via q"{reg}) by removing them and the
                             previously pressed key.
@@ -135,8 +155,8 @@ USAGE
                             When executed again on the result: Replace with the
                             alternative approach.
 
-    CTRL-G y                Yank the current command-line (to the default
-                            register).
+    CTRL-G Y                Yank the current command-line to the default register.
+    CTRL-G y{x}             Yank the current command-line into register x.
 
     CTRL-R CTRL-S           Insert the (single) character under the cursor.
     CTRL-R CTRL-L           Insert the current line (without leading indent and
@@ -193,8 +213,8 @@ USAGE
     ALT-/                   Toggle search mode between normal, case-insensitive,
                             and literal.
 
-    ALT-SHIFT-/             Toggle search mode between whole word (\<...\>) and
-                            normal matching.
+    ALT-SHIFT-/             Toggle search mode between normal, whole word
+                            (\<...\>) and whole \_sWORD\_s matching.
 
     ALT-(                   (Un-)wrap search pattern in capturing group \(...\).
 
@@ -220,8 +240,10 @@ To uninstall, use the :RmVimball command.
 ### DEPENDENCIES
 
 - Requires Vim 7.0 or higher.
-- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.041 or
+- Requires the ingo-library.vim plugin ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)), version 1.043 or
   higher.
+- ArgsAndMore.vim plugin ([vimscript #4152](http://www.vim.org/scripts/script.php?script_id=4152)) (optional; providing :Argdo et
+  al. for the c\_CTRL-G\_ad etc. mappings).
 - SmartCase.vim plugin ([vimscript #1359](http://www.vim.org/scripts/script.php?script_id=1359), or my fork at
   https://github.com/inkarkat/vim-SmartCase) (optional, only for
   c\_CTRL-G\_CTRL-S).
@@ -250,6 +272,14 @@ If you don't want the CmdlineSpecialEdits-SpecialSearchModes (e.g. //, /?,
 
 Remapping to other keys isn't possible here.
 
+The c\_CTRL-R\_CTRL\_V mapping does literal pattern / replacement in the
+built-in :substitute command as well as any custom command starting with
+:Substitute or :SmartCase. The c\_CTRL-G\_ad etc. mappings add the :s\_e flag
+to substitutions. You can extend or change the list of custom commands that
+are considered via a regular expression in:
+
+    let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^cmd1$\|^prefix'
+
 If you want to use different mappings, map your keys to the
 &lt;Plug&gt;(CmdlineSpecialEdits...) mapping targets _before_ sourcing the script
 (e.g. in your vimrc):
@@ -260,7 +290,16 @@ If you want to use different mappings, map your keys to the
     cmap <C-g><C-o> <Plug>(CmdlineSpecialRecallAnyRange)
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
+    cmap <C-g>ad <Plug>(CmdlineSpecialIterateArgdo)
+    cmap <C-g>aw <Plug>(CmdlineSpecialIterateArgdoWrite)
+    cmap <C-g>bd <Plug>(CmdlineSpecialIterateBufdo)
+    cmap <C-g>bw <Plug>(CmdlineSpecialIterateBufdoWrite)
+    cmap <C-g>wd <Plug>(CmdlineSpecialIterateWinbufdo)
+    cmap <C-g>ww <Plug>(CmdlineSpecialIterateWinbufdoWrite)
+    cmap <C-g>td <Plug>(CmdlineSpecialIterateTabwindo)
+    cmap <C-g>tw <Plug>(CmdlineSpecialIterateTabwindoWrite)
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
+    cmap <C-g>! <Plug>(CmdlineSpecialToggleBang)
     cmap <C-g>' <Plug>(CmdlineSpecialToggleSymbolicRange)
     cmap <C-g>+ <Plug>(CmdlineSpecialToggleRelativeRange)
     cmap <C-g><C-h> <Plug>(CmdlineSpecialRemoveBackspacing)
@@ -269,7 +308,8 @@ If you want to use different mappings, map your keys to the
     cmap <C-g>A <Plug>(CmdlineSpecialAddSuffix)
     cmap <C-g>s <Plug>(CmdlineSpecialSimplifyBranches)
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
-    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-g>y <Plug>(CmdlineSpecialRegisterYankCommandLine)
+    cmap <C-g>Y <Plug>(CmdlineSpecialYankCommandLine)
     cmap <C-r><C-l> <Plug>(CmdlineSpecialInsertLine)
     cmap <C-r><C-s> <Plug>(CmdlineSpecialInsertChar)
     cmap <C-r><C-y> <Plug>(CmdlineSpecialInsertSelection)
@@ -290,6 +330,23 @@ below).
 HISTORY
 ------------------------------------------------------------------------------
 
+##### 1.10    02-Nov-2024
+- CHG: Switch &lt;C-G&gt;y to &lt;C-G&gt;Y and add &lt;C-G&gt;y{x} variant that allows to pass
+  the register to yank the command-line to.
+- BUG: &lt;C-G&gt;&lt;C-S&gt; introduces an additional separator if the cursor is before
+  the final substitution separator (i.e. in the replacement part).
+- ENH: Allow customization of the &lt;C-R&gt;&lt;C-V&gt; literal pattern / replacement for
+  custom :Substitute commands and add :SmartCase by default.
+- ENH: Add &lt;C-G&gt;ad, &lt;C-G&gt;aw, ... mappings that prepend the :Argdo,
+  :ArgdoWrite, etc. commands provided by ArgsAndMore.vim to the command-line
+  (and append the :s\_e flag to a :substitute command).
+- ENH: Also add the search pattern toggled via normal mode &lt;A-/&gt;, &lt;A-?&gt;, &lt;A-(&gt;
+  to the search history.
+- ENH: Add &lt;C-G&gt;! to toggle a command's bang ([!]).
+- ENH: Add whole \\\_sWORD\\\_s matching to ALT-SHIFT-/ toggling as a third mode.
+
+__You need to update to ingo-library ([vimscript #4433](http://www.vim.org/scripts/script.php?script_id=4433)) version 1.044!__
+
 ##### 1.00    10-Mar-2020
 - First published version.
 
@@ -297,7 +354,7 @@ HISTORY
 - Started development.
 
 ------------------------------------------------------------------------------
-Copyright: (C) 2012-2020 Ingo Karkat -
+Copyright: (C) 2012-2024 Ingo Karkat -
 The [VIM LICENSE](http://vimdoc.sourceforge.net/htmldoc/uganda.html#license) applies to this plugin.
 
 Maintainer:     Ingo Karkat &lt;ingo@karkat.de&gt;

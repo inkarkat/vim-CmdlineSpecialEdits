@@ -4,7 +4,7 @@
 "   - Requires Vim 7.0 or higher.
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2012-2020 Ingo Karkat
+" Copyright: (C) 2012-2022 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -25,6 +25,9 @@ if ! exists('g:CmdlineSpecialEdits_SymbolicRangeMaximumOffset')
 endif
 if ! exists('g:CmdlineSpecialEdits_EnableSpecialSearchMode')
     let g:CmdlineSpecialEdits_EnableSpecialSearchMode = 1
+endif
+if ! exists('g:CmdlineSpecialEdits_SubstitutionCommandsExpr')
+    let g:CmdlineSpecialEdits_SubstitutionCommandsExpr = '^Substitute\|^SmartCase'
 endif
 
 
@@ -55,6 +58,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSmartCase)', 'c')
     cmap <C-g><C-s> <Plug>(CmdlineSpecialToggleSmartCase)
 endif
 
+" Note: We can have <silent> here because of the query for the new separator.
 cnoremap <silent> <Plug>(CmdlineSpecialChangeSubstitutionSep) <C-\>e(CmdlineSpecialEdits#Substitute#ChangeSeparator())<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialChangeSubstitutionSep)', 'c')
     cmap <C-g>/ <Plug>(CmdlineSpecialChangeSubstitutionSep)
@@ -63,6 +67,11 @@ endif
 cnoremap <Plug>(CmdlineSpecialDeleteToEnd) <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialDeleteToEnd)', 'c')
     cmap <C-g>D <Plug>(CmdlineSpecialDeleteToEnd)
+endif
+
+cnoremap <Plug>(CmdlineSpecialToggleBang) <C-\>e(CmdlineSpecialEdits#Bang#Toggle())<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialToggleBang)', 'c')
+    cmap <C-g>! <Plug>(CmdlineSpecialToggleBang)
 endif
 
 cnoremap <Plug>(CmdlineSpecialToggleSymbolicRange) <C-\>e(CmdlineSpecialEdits#Range#ToggleSymbolic())<CR>
@@ -104,9 +113,13 @@ if ! hasmapto('<Plug>(CmdlineSpecialIgnoreCaseMixed)', 'c')
     cmap <C-g>c <Plug>(CmdlineSpecialIgnoreCaseMixed)
 endif
 
-cnoremap <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
+cnoremap <silent> <Plug>(CmdlineSpecialRegisterYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#RegisterYankCommandLine(getcmdline()))<CR>
+if ! hasmapto('<Plug>(CmdlineSpecialRegisterYankCommandLine)', 'c')
+    cmap <C-g>y <Plug>(CmdlineSpecialRegisterYankCommandLine)
+endif
+cnoremap <silent> <Plug>(CmdlineSpecialYankCommandLine) <C-\>e(CmdlineSpecialEdits#Edit#YankCommandLine(getcmdline()))<CR>
 if ! hasmapto('<Plug>(CmdlineSpecialYankCommandLine)', 'c')
-    cmap <C-g>y <Plug>(CmdlineSpecialYankCommandLine)
+    cmap <C-g>Y <Plug>(CmdlineSpecialYankCommandLine)
 endif
 
 cnoremap <Plug>(CmdlineSpecialInsertSelection) <C-r><C-r>=tr(ingo#selection#Get(), "\n", "\r")<CR>
@@ -142,7 +155,7 @@ if g:CmdlineSpecialEdits_EnableSpecialSearchMode
     cnoremap <expr> * CmdlineSpecialEdits#Search#SpecialSearchMode('*')
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleSearchMode) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleMode(@/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr>   <Plug>(CmdlineSpecialToggleSearchMode) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleMode(getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'n')
     nmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
@@ -151,7 +164,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleSearchMode)', 'c')
     cmap <A-/> <Plug>(CmdlineSpecialToggleSearchMode)
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleWholeWord) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleWholeWord('n', @/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleWholeWord) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleWholeWord("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'n')
     nmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
@@ -160,7 +173,7 @@ if ! hasmapto('<Plug>(CmdlineSpecialToggleWholeWord)', 'c')
     cmap <A-?> <Plug>(CmdlineSpecialToggleWholeWord)
 endif
 
-nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
+nnoremap <silent> <Plug>(CmdlineSpecialToggleGrouping) :<C-u>let @/=CmdlineSpecialEdits#Search#ToggleGrouping('n', @/)<Bar>call histadd('search', @/)<Bar>echo ingo#avoidprompt#TranslateLineBreaks('/' . @/)<CR>
 cnoremap <expr> <Plug>(CmdlineSpecialToggleGrouping) (stridx('/?', getcmdtype()) == -1 ? '' : '<C-\>e(CmdlineSpecialEdits#Search#ToggleGrouping("c", getcmdline()))<CR>')
 if ! hasmapto('<Plug>(CmdlineSpecialToggleGrouping)', 'n')
     nmap <A-(> <Plug>(CmdlineSpecialToggleGrouping)

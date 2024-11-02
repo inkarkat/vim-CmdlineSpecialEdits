@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2014-2020 Ingo Karkat
+" Copyright: (C) 2014-2021 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -33,7 +33,8 @@ function! CmdlineSpecialEdits#SmartCase#ToggleCommand()
 	if empty(l:pattern)
 	    let l:toggleSubstituteCommand = l:newCommand . l:toggleSubstituteCommand
 	else
-	    let l:toggleSubstituteCommand = l:newCommand . l:separator . call(l:PatternConverter, [l:pattern]) . l:separator . l:replacement . l:separator . l:flags . l:count
+	    let l:tail = (empty(l:flags) && empty(l:count) && ! ingo#str#EndsWith(l:cmdlineBeforeCursor, l:separator) ? '' : l:separator . l:flags . l:count)
+	    let l:toggleSubstituteCommand = l:newCommand . l:separator . call(l:PatternConverter, [l:pattern]) . l:separator . l:replacement . l:tail
 	endif
 
 	let l:upToCommand = join(l:commandParse[1:3], '')

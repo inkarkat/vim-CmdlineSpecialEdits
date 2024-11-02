@@ -3,7 +3,7 @@
 " DEPENDENCIES:
 "   - ingo-library.vim plugin
 "
-" Copyright: (C) 2019-2020 Ingo Karkat
+" Copyright: (C) 2019-2023 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
@@ -34,10 +34,10 @@ function! s:LiteralSubstitute( existingCommand, registerContents, args ) abort
     " current cursor position) a <Nul> character and searching for it.
     let l:sentinel = "\<Nul>"
     let [l:separator, l:pattern, l:replacement, l:flags, l:count] =
-	\ingo#cmdargs#substitute#Parse(a:args . l:sentinel, {'emptyReplacement': '', 'emptyFlags': ['', '']})
+    \   ingo#cmdargs#substitute#Parse(a:args . l:sentinel, {'emptyReplacement': '', 'emptyFlags': ['', '']})
 
     if l:replacement =~# l:sentinel
-	return a:existingCommand . escape(a:registerContents, '\' . (&magic ? '&~' : '') . l:separator)
+	return a:existingCommand . ingo#regexp#EscapeLiteralReplacement(a:registerContents, l:separator)
     else
 	" This is also the fallback for any other location.
 	return s:AppendLiteralPattern(a:existingCommand, a:registerContents, l:separator)
@@ -49,18 +49,18 @@ function! s:LiteralPut( existingCommand, registerContents, args ) abort
 endfunction
 function! CmdlineSpecialEdits#Literal#Register() abort
     let [l:cmdlineBeforeCursor, l:cmdlineAfterCursor] = CmdlineSpecialEdits#GetCurrentCmdline()
-    let l:registerContents = getreg(ingo#query#get#Register('\'))
+    let l:registerContents = getreg(ingo#query#get#Register({'errorRegister': '\'}))
 
     if getcmdtype() =~# '^[:>]$'
 	let l:commandParse = ingo#cmdargs#command#Parse(l:cmdlineBeforeCursor, '.*$')
 	if ! empty(l:commandParse)
-	    let [l:fullCommandUnderCursor, l:combiner, l:range, l:commandCommands, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
+	    let [l:fullCommandUnderCursor, l:combiner, l:commandCommands, l:range, l:commandName, l:commandBang, l:commandDirectArgs, l:commandArgs] = l:commandParse
 
 	    if l:commandName =~# '^pu\%[t]$'
 		let l:resultBeforeCursor = s:LiteralPut(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
 		call setcmdpos(strlen(l:resultBeforeCursor) + 1)
 		return l:resultBeforeCursor . l:cmdlineAfterCursor
-	    elseif l:commandName =~# '^s\%[ubstitute]$\|^Substitute' ||
+	    elseif l:commandName =~# '^s\%[ubstitute]$' . (empty(g:CmdlineSpecialEdits_SubstitutionCommandsExpr) ? '' : '\|' . g:CmdlineSpecialEdits_SubstitutionCommandsExpr) ||
 	    \   ingo#str#Trim(l:commandDirectArgs . l:commandArgs . l:cmdlineAfterCursor) =~# '^' . ingo#cmdargs#pattern#PatternExpr() . '$'
 		" :substitute or an alike custom command.
 		let l:resultBeforeCursor =  s:LiteralSubstitute(l:cmdlineBeforeCursor, l:registerContents, l:commandDirectArgs . l:commandArgs)
